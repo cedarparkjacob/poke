@@ -135,7 +135,7 @@ document.addEventListener("pointerdown",e=>{
    kantoGesture.dragging=true;kantoDrag={card,dex:card.dataset.dex,pointerId:e.pointerId};
    card.classList.add("dragging");
    try{card.setPointerCapture(e.pointerId)}catch(err){}
- },300);
+ },150);
 });
 document.addEventListener("pointermove",e=>{
  if(!kantoGesture||e.pointerId!==kantoGesture.pointerId)return;
@@ -149,11 +149,11 @@ document.addEventListener("pointermove",e=>{
    return;
  }
  const dx=e.clientX-kantoGesture.startX,dy=e.clientY-kantoGesture.startY;
- if(!kantoGesture.scrolling&&!kantoGesture.dragging&&Math.hypot(dx,dy)>8){
+ if(!kantoGesture.scrolling&&!kantoGesture.dragging&&Math.hypot(dx,dy)>4){
    clearTimeout(kantoHoldTimer);kantoHoldTimer=null;
    if(Math.abs(dx)>Math.abs(dy))kantoGesture.scrolling=true;
  }
- if(kantoGesture.scrolling){e.preventDefault();kantoGesture.strip.scrollLeft=kantoGesture.startScroll-dx}
+ if(kantoGesture.scrolling){e.preventDefault();kantoGesture.strip.scrollLeft=kantoGesture.startScroll-(dx*2)}
 });
 document.addEventListener("pointerup",e=>{
  if(!kantoGesture||e.pointerId!==kantoGesture.pointerId)return;
