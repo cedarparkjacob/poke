@@ -77,3 +77,22 @@
 /* Keep touch gestures responsive while preserving vertical page scrolling. */
 .kanto-strip{scroll-behavior:auto}
 .kanto-card{touch-action:pan-y}
+
+/* Alternate version selection in the automatic Original 151 binder */
+.binder-card-frame-select{gap:3px}
+.binder-card-choice{display:block;width:100%;padding:0;border:0;background:transparent;cursor:pointer;border-radius:3px}
+.binder-card-choice img{width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
+.binder-card-choice:hover{outline:2px solid var(--purple);outline-offset:2px}
+.binder-version-hint{display:block;text-align:center;font-size:9px;color:var(--muted);padding:2px 0}
+.kanto-version-dialog{width:min(760px,calc(100% - 24px));max-height:min(85vh,850px);overflow:hidden;padding:0}
+.kanto-version-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+.kanto-version-head .eyebrow{margin:0 0 5px}.kanto-version-head h2{margin:0;font-size:20px}
+.kanto-version-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;padding:14px;max-height:calc(85vh - 86px);overflow:auto}
+.kanto-version-option{display:flex;flex-direction:column;gap:6px;min-width:0;padding:6px;border:1px solid var(--line);border-radius:9px;background:#090d18;color:var(--text);text-align:left;cursor:pointer}
+.kanto-version-option.selected{border:2px solid var(--cyan);padding:5px;background:#0891b222}
+.kanto-version-option:hover{border-color:var(--purple)}
+.kanto-version-option img{display:block;width:100%;aspect-ratio:3/4;object-fit:contain}
+.kanto-version-option span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.kanto-version-option strong,.kanto-version-option small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kanto-version-option strong{font-size:10px}.kanto-version-option small{font-size:9px;color:var(--muted)}
+.kanto-version-dialog::backdrop{background:#030611d9;backdrop-filter:blur(5px)}
