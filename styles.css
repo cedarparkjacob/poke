@@ -52,3 +52,20 @@
 .binder-card-frame img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain;border-radius:2px}
 .binder-image-fallback{aspect-ratio:3/4;display:grid;place-items:center;color:var(--muted);font-size:11px;text-align:center}
 .binder-card-frame .binder-card-toggle{margin-top:3px;padding:4px 2px;font-size:10px}
+
+/* Filterable one-card-per-Pokemon binder view */
+.binder-view-grid{display:flex;flex-direction:column;gap:12px;min-width:0}
+.binder-view-controls{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.binder-view-controls label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.binder-view-controls select{background:#090d18;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px}
+.binder-view-blank-toggle input{accent-color:var(--purple)}
+.binder-view-grid-cards{display:grid;grid-template-columns:repeat(var(--binder-view-columns),minmax(0,1fr));gap:7px;align-items:start;min-width:0}
+.binder-view-slot{min-width:0;padding:4px;border:1px solid #34445f;border-radius:6px;background:#0c1423;overflow:hidden}
+.binder-view-slot>img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain;border-radius:3px}
+.binder-view-caption{display:flex;flex-direction:column;gap:3px;padding:5px 2px 2px;min-width:0}
+.binder-view-caption strong,.binder-view-empty-inner strong{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.binder-view-caption span,.binder-view-empty-inner span{font-size:9px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.binder-view-empty{aspect-ratio:3/4;display:grid;place-items:center;border-style:dashed;background:#ffffff04}
+.binder-view-empty-inner{display:flex;flex-direction:column;gap:7px;align-items:center;text-align:center;padding:8px;min-width:0}
+@media(max-width:700px){.binder-view-grid-cards{grid-template-columns:repeat(min(var(--binder-view-columns),4),minmax(0,1fr))}}
+@media(max-width:420px){.binder-view-grid-cards{grid-template-columns:repeat(min(var(--binder-view-columns),3),minmax(0,1fr))}}
