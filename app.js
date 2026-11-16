@@ -85,12 +85,14 @@ function renderBinderView(){
  cards.filter(c=>{
    const dex=Number(c.natdex_number);
    if(c.card_type!=="pokemon"||!dex)return false;
-   if(q&&!([c.name,c.natdex_number].join(" ").toLowerCase().includes(q)))return false;
+   if(q&&![c.name,c.natdex_number,c.set_name,c.set,c.rarity_name,c.illustrator].join(" ").toLowerCase().includes(q))return false;
    if(regionsOn.length&&!regionsOn.includes(String(generationForDex(dex))))return false;
    if(typesOn.length&&!typesOn.includes(c.card_type))return false;
-   if(ownershipOn.includes("owned")&&!qty(c.id)&&!cards.some(x=>Number(x.natdex_number)===dex&&qty(x.id)>0))return false;
-   if(ownershipOn.includes("missing")&&cards.some(x=>Number(x.natdex_number)===dex&&qty(x.id)>0))return false;
-   if(ownershipOn.includes("wishlist")&&!cards.some(x=>Number(x.natdex_number)===dex&&wished(x.id)))return false;
+   if(ownershipOn.length){
+     const group=cards.filter(x=>Number(x.natdex_number)===dex);
+     const owned=group.some(x=>qty(x.id)>0),wish=group.some(x=>wished(x.id));
+     if(!(ownershipOn.includes("owned")&&owned)&&!(ownershipOn.includes("missing")&&!owned)&&!(ownershipOn.includes("wishlist")&&wish))return false;
+   }
    return true;
  }).forEach(c=>{const dex=Number(c.natdex_number);if(!eligible.has(dex))eligible.set(dex,{name:c.name,representative:c})});
  let slots=[...eligible.entries()].map(([dex,p])=>({dex,name:p.name,card:byDex.get(dex)||null,sortCard:byDex.get(dex)||p.representative}));
