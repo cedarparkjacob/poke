@@ -73,3 +73,7 @@
 
 /* Prevent mobile long-press image/text callouts from interfering with card reordering. */
 .kanto-card{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+
+/* Keep touch gestures responsive while preserving vertical page scrolling. */
+.kanto-strip{scroll-behavior:auto}
+.kanto-card{touch-action:pan-y}
