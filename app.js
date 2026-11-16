@@ -150,7 +150,7 @@ document.addEventListener("pointercancel",e=>{
 document.addEventListener("change",e=>{if(e.target.id==="binder-select"){activeBinderId=e.target.value;renderBinders()}});
 document.querySelectorAll(".filter-toggle").forEach(b=>b.addEventListener("click",()=>{const d=b.closest(".filter-dropdown"),open=!d.classList.contains("open");closeFilterMenus(d);d.classList.toggle("open",open);b.setAttribute("aria-expanded",String(open))}));
 document.addEventListener("click",e=>{if(!e.target.closest(".filter-dropdown"))closeFilterMenus()});
-document.addEventListener("change",e=>{if(e.target.matches(".filter-menu input")){updateFilterLabels();if(!["collection","wishlist","kanto151"].includes(activeView))view("collection");else render()}});
+document.addEventListener("change",e=>{if(e.target.matches(".filter-menu input")){updateFilterLabels();if(!["collection","wishlist","kanto151","binder-view"].includes(activeView))view("collection");else render()}});
 $("#search").addEventListener("input",()=>{if(!["collection","wishlist","kanto151"].includes(activeView))view("collection");else render()});
 $("#sort-filter").addEventListener("change",()=>{if(!["collection","wishlist","kanto151"].includes(activeView))view("collection");else render()});
 $("#settings-open").addEventListener("click",()=>$("#settings-dialog").showModal());$("#connect-github").addEventListener("click",connect);$("#sync-github").addEventListener("click",sync);$("#export-data").addEventListener("click",exportData);$("#import-data").addEventListener("change",e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value=""});
