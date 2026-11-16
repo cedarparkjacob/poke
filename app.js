@@ -80,11 +80,32 @@ function renderBinderView(){
  const columns=Math.max(1,Math.min(12,Number(collection.binderViewColumns)||6)),showBlanks=!!collection.binderViewBlanks;
  const matches=filtered(),byDex=new Map();
  matches.filter(c=>c.card_type==="pokemon"&&Number(c.natdex_number)>0).forEach(c=>{const n=Number(c.natdex_number);if(!byDex.has(n))byDex.set(n,c)});
- const allDex=new Map();
- cards.filter(c=>c.card_type==="pokemon"&&Number(c.natdex_number)>0).forEach(c=>{const n=Number(c.natdex_number);if(!allDex.has(n))allDex.set(n,c.name)});
- let slots=[...byDex.entries()].map(([dex,card])=>({dex,name:card.name,card}));
- if(showBlanks){for(const [dex,name] of allDex)if(!byDex.has(dex))slots.push({dex,name,card:null})}
- slots.sort((a,b)=>a.card&&b.card?matches.indexOf(a.card)-matches.indexOf(b.card):a.card?-1:b.card?1:a.dex-b.dex);
+ const q=$("#search").value.toLowerCase().trim(),regionsOn=selected("region-filter"),typesOn=selected("type-filter"),ownershipOn=selected("ownership-filter");
+ const eligible=new Map();
+ cards.filter(c=>{
+   const dex=Number(c.natdex_number);
+   if(c.card_type!=="pokemon"||!dex)return false;
+   if(q&&!([c.name,c.natdex_number].join(" ").toLowerCase().includes(q)))return false;
+   if(regionsOn.length&&!regionsOn.includes(String(generationForDex(dex))))return false;
+   if(typesOn.length&&!typesOn.includes(c.card_type))return false;
+   if(ownershipOn.includes("owned")&&!qty(c.id)&&!cards.some(x=>Number(x.natdex_number)===dex&&qty(x.id)>0))return false;
+   if(ownershipOn.includes("missing")&&cards.some(x=>Number(x.natdex_number)===dex&&qty(x.id)>0))return false;
+   if(ownershipOn.includes("wishlist")&&!cards.some(x=>Number(x.natdex_number)===dex&&wished(x.id)))return false;
+   return true;
+ }).forEach(c=>{const dex=Number(c.natdex_number);if(!eligible.has(dex))eligible.set(dex,{name:c.name,representative:c})});
+ let slots=[...eligible.entries()].map(([dex,p])=>({dex,name:p.name,card:byDex.get(dex)||null,sortCard:byDex.get(dex)||p.representative}));
+ if(!showBlanks)slots=slots.filter(s=>s.card);
+ const sort=$("#sort-filter").value,cmp=(x,y)=>String(x??"").localeCompare(String(y??""),undefined,{numeric:true,sensitivity:"base"});
+ const setOrder=new Map(sets.map((s,i)=>[s.code,i]));
+ slots.sort((a,b)=>{
+   const x=a.sortCard,y=b.sortCard;let n=0;
+   if(sort.startsWith("gen-")){n=(generationForDex(x.natdex_number)??999)-(generationForDex(y.natdex_number)??999)||(Number(x.natdex_number)||99999)-(Number(y.natdex_number)||99999)||cmp(x.name,y.name);if(sort==="gen-desc")n=-n}
+   else if(sort.startsWith("dex-")){n=(Number(x.natdex_number)||9999)-(Number(y.natdex_number)||9999)||cmp(x.name,y.name);if(sort==="dex-desc")n=-n}
+   else if(sort.startsWith("rarity-")){n=cmp(x.rarity_name||x.rarity,y.rarity_name||y.rarity)||cmp(x.name,y.name);if(sort==="rarity-desc")n=-n}
+   else if(sort.startsWith("set-")){n=(setOrder.get(x.set)??9999)-(setOrder.get(y.set)??9999)||cmp(x.number_label,y.number_label)||cmp(x.name,y.name);if(sort==="set-desc")n=-n}
+   else{n=cmp(x.name,y.name)||cmp(x.number_label,y.number_label);if(sort==="name-desc")n=-n}
+   return n;
+ });
  $("#content").className="binder-view-grid";
  $("#result-count").textContent=byDex.size+" Pokémon matched"+(showBlanks?" · "+(slots.length-byDex.size)+" blank spaces":"");
  $("#view-caption").textContent="BINDER VIEW · ONE CARD PER POKÉMON";
