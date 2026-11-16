@@ -125,6 +125,7 @@ async function importData(f){try{const d=JSON.parse(await f.text());if(!d.cards|
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;if(b.dataset.a==="kanto-add"){if(Date.now()<kantoSuppressClickUntil)return;change(b.dataset.id,1);return}if(b.dataset.a==="plus")change(b.dataset.id,1);if(b.dataset.a==="minus")change(b.dataset.id,-1);if(b.dataset.a==="wish")wish(b.dataset.id);if(b.dataset.a==="binder-create")createBinder();if(b.dataset.a==="binder-toggle")toggleBinderCard(b.dataset.id)});
 document.addEventListener("change",e=>{if(e.target.matches("#binder-select")){activeBinderId=e.target.value;renderBinders()}if(e.target.matches("#binder-view-columns")){collection.binderViewColumns=Math.max(1,Math.min(12,Number(e.target.value)||6));saveLocal();renderBinderView()}if(e.target.matches("#binder-view-blanks")){collection.binderViewBlanks=e.target.checked;saveLocal();renderBinderView()}if(e.target.matches("#binder-columns")){const b=activeBinder();if(b){collection.binderColumns=collection.binderColumns||{};collection.binderColumns[b.id]=Math.max(1,Math.min(10,Number(e.target.value)||4));saveLocal();renderBinders()}}});
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>view(b.dataset.view)));
+document.addEventListener("contextmenu",e=>{if(e.target.closest(".kanto-card"))e.preventDefault()});
 document.addEventListener("pointerdown",e=>{
  const card=e.target.closest(".kanto-card");if(!card||activeView!=="kanto151"||e.button!==0)return;
  clearTimeout(kantoHoldTimer);kantoDrag=null;
@@ -134,7 +135,7 @@ document.addEventListener("pointerdown",e=>{
    kantoGesture.dragging=true;kantoDrag={card,dex:card.dataset.dex,pointerId:e.pointerId};
    card.classList.add("dragging");
    try{card.setPointerCapture(e.pointerId)}catch(err){}
- },450);
+ },300);
 });
 document.addEventListener("pointermove",e=>{
  if(!kantoGesture||e.pointerId!==kantoGesture.pointerId)return;
