@@ -96,3 +96,24 @@
 .kanto-version-option strong,.kanto-version-option small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .kanto-version-option strong{font-size:10px}.kanto-version-option small{font-size:9px;color:var(--muted)}
 .kanto-version-dialog::backdrop{background:#030611d9;backdrop-filter:blur(5px)}
+
+/* Mass collection update table */
+.mass-update-toggle{align-items:center;gap:12px;margin-top:12px}
+.mass-update-toggle>span{font-size:11px;color:var(--muted)}
+.mass-update{display:flex;flex-direction:column;gap:10px;min-width:0}
+.mass-update-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.mass-update-actions>span{font-size:11px;color:var(--muted);margin-right:auto}
+.mass-select-all{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text)}
+.mass-select-all input,.mass-row-check{accent-color:var(--purple);width:15px;height:15px}
+.mass-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.mass-table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.mass-table th{position:sticky;top:0;background:#17243a;color:var(--muted);font-size:10px;text-align:left;letter-spacing:.06em;padding:9px 11px}
+.mass-table td{padding:5px 11px;border-top:1px solid #ffffff0c}
+.mass-row{cursor:pointer;transition:background .12s}
+.mass-row:hover{background:#ffffff0a}
+.mass-card-cell{display:flex;align-items:center;gap:9px;min-width:180px;font-weight:650}
+.mass-card-cell img{width:27px;height:36px;object-fit:contain;border-radius:3px;background:#090d18}
+.mass-owned,.mass-pending{font-variant-numeric:tabular-nums;text-align:center}
+.mass-pending{color:var(--cyan);font-weight:800}
+.mass-update-actions button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:600px){.mass-update-toggle{align-items:flex-start;flex-direction:column}.mass-update-actions{gap:10px}.mass-update-actions>span{width:100%;order:3}.mass-table{font-size:11px}.mass-table th,.mass-table td{padding:6px 8px}}
