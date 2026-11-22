@@ -7,23 +7,46 @@ on:
     - cron: "17 8 * * 1"
 permissions:
   contents: write
+concurrency:
+  group: catalog-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Build catalog from upstream data
+      - name: Build catalog and update app version
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           python scripts/build_catalog.py
-          git add data/cards.json
+
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]] || ! git diff --quiet -- data/cards.json; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("version.json")
+          data = json.loads(path.read_text())
+          parts = [int(part) for part in str(data["version"]).split(".")]
+          while len(parts) < 3:
+              parts.append(0)
+          parts[2] += 1
+          data["version"] = ".".join(map(str, parts))
+          path.write_text(json.dumps(data, indent=2) + "\\n")
+          print("Updated app version to v" + data["version"])
+          PY
+          fi
+
+          git add data/cards.json version.json
           if git diff --cached --quiet; then
-            echo "Catalog is already current."
+            echo "Catalog and app version are already current."
           else
-            git commit -m "Update Pokémon TCG Pocket card catalog"
+            git commit -m "Update card catalog and app version"
             git push
           fi
