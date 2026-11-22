@@ -38,7 +38,7 @@ jobs:
               parts.append(0)
           parts[2] += 1
           data["version"] = ".".join(map(str, parts))
-          path.write_text(json.dumps(data, indent=2) + "\\n")
+          path.write_text(json.dumps(data, indent=2) + "\n")
           print("Updated app version to v" + data["version"])
           PY
           fi
