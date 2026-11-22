@@ -137,3 +137,6 @@
  .mass-card-cell img{width:15px;height:21px;flex-basis:15px}
  .mass-row{height:26px}
 }
+
+/* Current app version in the top bar */
+.app-version{font-weight:700;color:var(--cyan);white-space:nowrap}
