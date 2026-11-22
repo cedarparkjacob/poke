@@ -117,3 +117,23 @@
 .mass-pending{color:var(--cyan);font-weight:800}
 .mass-update-actions button:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:600px){.mass-update-toggle{align-items:flex-start;flex-direction:column}.mass-update-actions{gap:10px}.mass-update-actions>span{width:100%;order:3}.mass-table{font-size:11px}.mass-table th,.mass-table td{padding:6px 8px}}
+
+
+/* Denser mass-update rows with clear vertical column separators */
+.mass-table{font-size:10px;line-height:1.15}
+.mass-table th{padding:5px 8px;font-size:9px;border-right:1px solid #34445f}
+.mass-table td{padding:2px 8px;border-right:1px solid #263550;border-top:1px solid #263550}
+.mass-table th:last-child,.mass-table td:last-child{border-right:0}
+.mass-table th:first-child,.mass-table td:first-child{width:30px;text-align:center}
+.mass-card-cell{min-width:145px;gap:6px;font-weight:600}
+.mass-card-cell img{width:17px;height:23px;flex:0 0 17px;border-radius:2px}
+.mass-owned,.mass-pending{min-width:52px}
+.mass-row{height:29px}
+.mass-row:hover{background:#ffffff0c}
+@media(max-width:600px){
+ .mass-table{font-size:9px}
+ .mass-table th,.mass-table td{padding:3px 5px}
+ .mass-card-cell{min-width:125px;gap:5px}
+ .mass-card-cell img{width:15px;height:21px;flex-basis:15px}
+ .mass-row{height:26px}
+}
