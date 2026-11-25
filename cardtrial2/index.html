@@ -13,7 +13,7 @@ header{max-width:1400px;margin:auto;padding:30px 24px 18px}.topline{display:flex
 .demo{background:linear-gradient(150deg,#141d32,#0d1323);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0;box-shadow:0 12px 35px #0005}.demo h2{font-size:15px;margin:0 0 3px}.demo p{font-size:12px;color:var(--muted);margin:0 0 12px;min-height:34px}
 .stage{height:350px;display:grid;place-items:center;perspective:1000px;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}
 .card{width:min(100%,220px);aspect-ratio:3/4.2;position:relative;transform-style:preserve-3d;will-change:transform;border-radius:17px;overflow:hidden;background:#263b52;box-shadow:0 22px 42px #000a,0 0 0 1px #ffffff45;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:rotateX(var(--rx)) rotateY(var(--ry))}
-.scene{position:absolute;inset:0;width:100%;height:100%;display:block;transform:translateZ(1px)}.scene .far{transform:translate3d(calc(var(--dx)*-.16),calc(var(--dy)*-.12),0)}.scene .mid{transform:translate3d(calc(var(--dx)*-.34),calc(var(--dy)*-.25),0)}.scene .near{transform:translate3d(calc(var(--dx)*-.55),calc(var(--dy)*-.4),0)}
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:translateZ(1px);filter:saturate(1.08) contrast(1.04)}
 .pokemon{position:absolute;width:76%;height:72%;left:12%;top:9%;object-fit:contain;filter:drop-shadow(0 12px 8px #07121d99);transform:translate3d(calc(var(--dx)*.75),calc(var(--dy)*.75),58px)}
 .spark{position:absolute;color:#fff;text-shadow:0 0 10px var(--glow,#fff);font-size:21px;transform:translateZ(72px)}.spark.a{left:13%;top:12%}.spark.b{right:12%;top:23%;font-size:17px}.spark.c{right:17%;bottom:29%;font-size:24px}
 .caption{position:absolute;left:10px;right:10px;bottom:9px;padding:8px 10px;border-radius:9px;background:#17213bbd;backdrop-filter:blur(9px);color:#fff;transform:translate3d(calc(var(--dx)*.15),calc(var(--dy)*.15),90px);border:1px solid #ffffff60;box-shadow:0 5px 16px #0005}.caption b{display:block;font-size:13px;letter-spacing:.09em}.caption small{font-size:9px;opacity:.85;letter-spacing:.12em}
@@ -25,10 +25,10 @@ footer{max-width:1400px;margin:0 auto;padding:0 24px 35px;color:#7f8da8;font-siz
 </style>
 </head>
 <body>
-<header><div class="topline"><div><h1>POKÉMON / 3D CARD LAB 02</h1><p class="sub">Ten Pokémon, ten richer environments. This set layers real illustrated SVG environment assets behind the Pokémon artwork, with depth, parallax, and holographic foil. Drag or swipe to tilt each card.</p></div><a class="back" href="../cardtrial/">← Mew Lab</a></div></header>
+<header><div class="topline"><div><h1>POKÉMON / 3D CARD LAB 02</h1><p class="sub">Ten Pokémon, ten richer environments. This set uses richly textured, procedurally painted environments—not a stack of simple SVG icons—with cinematic lighting, terrain, architecture, foliage, water, and atmospheric detail. Drag or swipe to tilt each card.</p></div><a class="back" href="../cardtrial/">← Mew Lab</a></div></header>
 <div class="controls"><button id="auto" class="active" type="button">Auto-wiggle: on</button><button id="reset" type="button">Reset angles</button><span class="hint">Tilt is limited to 30° · Drag farther without spinning</span></div>
 <main class="grid" id="grid"></main>
-<footer>Pokémon character artwork sourced from the jnovack/pokemon-svg archive. Environment objects are original CC0 SVG assets from CaptExcellent/kits-library-assets (Kitbitz), layered into the card scenes.</footer>
+<footer>Pokémon character artwork sourced from the jnovack/pokemon-svg archive. Environments are rendered locally with layered procedural painting, custom terrain and architecture, lighting, and fine texture.</footer>
 <script>
 const pokemon=[
 {id:1,name:"BULBASAUR",type:"GRASS · POISON",scene:"Primeval forest"},
@@ -45,74 +45,70 @@ const pokemon=[
 const palettes=[
 ["#b9e1a3","#4d8761","#173e37"],["#ffd18a","#bd5637","#40212b"],["#b4eaf1","#4e9db0","#174b68"],["#f8df9a","#a4aa55","#334f3c"],["#f2c99b","#a46d4e","#493c39"],["#b9a8df","#61518b","#282540"],["#d3edf4","#78a9c0","#344c70"],["#e4f5fb","#86b3c3","#31596c"],["#c7f0c4","#68c99a","#245e5b"],["#d5c8ff","#8875d2","#252c60"]
 ];
+
+// Procedural painted environments: layered gradients, atmospheric depth, terrain,
+// architecture, foliage, water, lighting, and fine-grain texture. No external SVG-only scenes.
 function scene(i){
- const c=palettes[i],id="bg"+i;
- const url=p=>"https://raw.githubusercontent.com/CaptExcellent/kits-library-assets/main/"+p.split("/").map(encodeURIComponent).join("/");
- const img=(p,x,y,w,h,opacity=1)=>'<image href="'+url(p)+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" opacity="'+opacity+'" preserveAspectRatio="xMidYMax meet"/>';
- const sets=[
-  [
-   ['kits/nature-kit/Pine detailed 03.svg',-28,35,155,255],
-   ['kits/nature-kit/TreeOakBranched-Organic-V-L-Green600.svg',100,40,165,260],
-   ['kits/nature-kit/Fern-Organic-V-M-Green500.svg',-8,210,112,126]
-  ],
-  [
-   ['kits/dungeon-kit/Mountain 1.svg',-12,38,264,230],
-   ['kits/dungeon-kit/Lava Pool 01.svg',-10,190,260,155],
-   ['kits/dungeon-kit/Crystal 01.svg',12,190,76,115],
-   ['kits/dungeon-kit/Crystal 01.svg',164,178,70,125]
-  ],
-  [
-   ['kits/ruins-kit/Waterfall.svg',-26,20,172,285],
-   ['kits/ruins-kit/Palm large 1.svg',124,8,150,275],
-   ['kits/ruins-kit/Fish 1.svg',28,210,76,48],
-   ['kits/ruins-kit/Fish 1.svg',145,238,58,38]
-  ],
-  [
-   ['kits/city-kit/Building 01.svg',-20,72,110,225],
-   ['kits/city-kit/Building 04.svg',63,38,116,258],
-   ['kits/city-kit/Building 08.svg',150,74,112,220]
-  ],
-  [
-   ['kits/nature-kit/TreeBirch-Organic-V-L-Orange600.svg',-28,35,160,270],
-   ['kits/nature-kit/TreeWalnut-Organic-V-L-Orange600.svg',105,32,165,275],
-   ['kits/nature-kit/BushFlowered-Organic-V-L-Orange600.svg',-10,225,130,125]
-  ],
-  [
-   ['kits/ruins-kit/Ruins-1.svg',-18,72,275,238],
-   ['kits/ruins-kit/Pillar large 1.svg',-20,82,95,250],
-   ['kits/ruins-kit/Vines.svg',120,135,145,205]
-  ],
-  [
-   ['kits/winter-kit/Snowy mountain 1.svg',-18,35,270,230],
-   ['kits/winter-kit/Pine Large 1.svg',-26,85,140,245],
-   ['kits/winter-kit/Pine Medium 1.svg',140,125,125,210]
-  ],
-  [
-   ['kits/winter-kit/Ice berg Large 1.svg',-28,50,170,230],
-   ['kits/winter-kit/Ice berg Multi 1.svg',92,35,180,250],
-   ['kits/winter-kit/Icy pool 1.svg',-8,210,255,140]
-  ],
-  [
-   ['kits/ruins-kit/Jungle tree large 1.svg',-30,22,180,280],
-   ['kits/ruins-kit/Jungle tree medium 1.svg',112,45,150,250],
-   ['kits/ruins-kit/Fern large.svg',-4,215,132,132]
-  ],
-  [
-   ['kits/nature-kit/Crystal 1.svg',-8,155,110,175],
-   ['kits/nature-kit/Crystal 2.svg',140,132,110,190],
-   ['kits/dungeon-kit/Pillar 01.svg',25,50,205,270],
-   ['kits/ruins-kit/Roots 1.svg',-10,230,250,120]
-  ]
- ];
- const defs='<defs><linearGradient id="'+id+'sky" x2="0" y2="1"><stop stop-color="'+c[0]+'"/><stop offset=".62" stop-color="'+c[1]+'"/><stop offset="1" stop-color="'+c[2]+'"/></linearGradient><radialGradient id="'+id+'glow"><stop stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
- const items=sets[i];
- return '<svg class="scene" viewBox="0 0 240 336" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">'+defs+
- '<rect width="240" height="336" fill="url(#'+id+'sky)"/>'+
- '<ellipse cx="150" cy="92" rx="105" ry="105" fill="url(#'+id+'glow)" opacity=".7"/>'+
- '<g class="far">'+img(items[0][0],items[0][1],items[0][2],items[0][3],items[0][4],.92)+'</g>'+
- '<g class="mid">'+items.slice(1,-1).map(v=>img(v[0],v[1],v[2],v[3],v[4],.98)).join("")+'</g>'+
- '<g class="near">'+img(items[items.length-1][0],items[items.length-1][1],items[items.length-1][2],items[items.length-1][3],items[items.length-1][4])+'</g>'+
- '<rect width="240" height="336" fill="url(#'+id+'glow)" opacity=".12"/></svg>';
+ const canvas=document.createElement("canvas");canvas.className="scene";canvas.width=720;canvas.height=1008;
+ const ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height;
+ let seed=9173+i*7919;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+ const palettes=[
+  ["#d9e9b3","#75aa77","#1b493f"],["#ffe0a0","#d65e37","#321b28"],["#b9edf0","#398da5","#123f5b"],
+  ["#f9df9a","#8f9b64","#263d39"],["#f3cba0","#bd7958","#43343a"],["#c7b4e6","#716092","#25243d"],
+  ["#d6edf4","#83b3c8","#405779"],["#e7f8fa","#91bdc8","#315c72"],["#d4f4cf","#6fc6a0","#205d59"],["#ddd2ff","#8b7bd5","#282b63"]
+ ],p=palettes[i];
+ const gradient=(a,b)=>{let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,a);g.addColorStop(1,b);return g};
+ const path=(pts,fill,stroke=null,lw=3)=>{ctx.beginPath();ctx.moveTo(...pts[0]);for(let n=1;n<pts.length;n++)ctx.lineTo(...pts[n]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}};
+ const ellipse=(x,y,rx,ry,color)=>{ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()};
+ const line=(pts,color,lw=3)=>{ctx.beginPath();ctx.moveTo(...pts[0]);pts.slice(1).forEach(v=>ctx.lineTo(...v));ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke()};
+ const glow=(x,y,r,color)=>{let g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,"transparent");ellipse(x,y,r,r,g)};
+ ctx.fillStyle=gradient(p[0],p[2]);ctx.fillRect(0,0,w,h);
+ // atmospheric sky, sun/moon and distant cloud banks
+ glow(510,205,290,"#fff7d277");ellipse(520,205,72,72,"#fff2c9b0");
+ for(let k=0;k<17;k++){let x=rand()*900-90,y=70+rand()*260,ww=70+rand()*180;ctx.globalAlpha=.07+rand()*.1;ellipse(x,y,ww,12+rand()*25,"#fff");}ctx.globalAlpha=1;
+ // distant mountain / skyline silhouettes
+ if([1,6,7].includes(i)){
+  for(let n=0;n<7;n++){let x=n*135-60,peak=220+rand()*150;path([[x,560],[x+80,peak],[x+145,560]],n%2?"#718b9c99":"#526d8599");}
+  if(i===6||i===7){for(let n=0;n<7;n++){let x=n*125-20,y=390+rand()*70;path([[x,y+180],[x+55,y],[x+115,y+180]],"#e5f3f2");path([[x+55,y],[x+76,y+65],[x+55,y+48],[x+35,y+70]],"#fff");}}
+ } else if(i===3){
+  for(let n=0;n<10;n++){let x=n*83-25,bh=150+rand()*260,bw=55+rand()*42,y=570-bh;ctx.fillStyle=["#405c59","#526c65","#354e52"][n%3];ctx.fillRect(x,y,bw,bh);for(let yy=y+22;yy<550;yy+=35)for(let xx=x+12;xx<x+bw-5;xx+=22){ctx.fillStyle=rand()>.25?"#f7d99a":"#243d4a";ctx.fillRect(xx,yy,9,15);}}
+  line([[0,570],[720,520],[720,1008],[0,1008]],"#263d42",2);
+ } else if(i===5){
+  // broken gothic skyline, towers and distant arches
+  for(let n=0;n<8;n++){let x=n*105-35,y=350+rand()*100,bw=90+rand()*30,bh=170+rand()*180;ctx.fillStyle="#514b70";ctx.fillRect(x,y,bw,bh);ctx.fillStyle="#82769b";ctx.fillRect(x+8,y+8,bw-16,bh-16);ctx.fillStyle="#393751";ctx.fillRect(x+22,y+35,13,45);ctx.fillRect(x+53,y+35,13,45);path([[x-8,y+5],[x+bw/2,y-75],[x+bw+8,y+5]],"#514b70");}
+ } else {
+  // layered distant ridges / canopy silhouettes
+  for(let layer=0;layer<3;layer++){let pts=[[0,490+layer*45]];for(let x=0;x<=720;x+=45)pts.push([x,390+layer*55+rand()*100]);pts.push([720,1008],[0,1008]);path(pts,["#638b7880","#3e705f99","#244f49"][layer]);}
+ }
+ // biome ground, water, lava, or snow planes
+ if(i===2||i===7){let g=ctx.createLinearGradient(0,560,0,h);g.addColorStop(0,"#60b9c5");g.addColorStop(.5,"#17617b");g.addColorStop(1,"#092e4c");ctx.fillStyle=g;ctx.fillRect(0,560,w,448);for(let n=0;n<100;n++){let x=rand()*w,y=575+rand()*410;ctx.globalAlpha=.12+rand()*.2;line([[x,y],[x+25+rand()*60,y-2-rand()*8]],i===7?"#e5ffff":"#a5f7ed",1+rand()*4);}ctx.globalAlpha=1;}
+ else if(i===1){let g=ctx.createLinearGradient(0,590,0,h);g.addColorStop(0,"#b74b32");g.addColorStop(.4,"#612b35");g.addColorStop(1,"#211b2b");ctx.fillStyle=g;ctx.fillRect(0,590,w,418);for(let n=0;n<12;n++){let x=rand()*w,y=650+rand()*340;glow(x,y,25,"#ff8a35aa");line([[x-40,y+8],[x,y-5],[x+35,y+12]],"#ff9b48",4+rand()*5);}}
+ else {let g=ctx.createLinearGradient(0,540,0,h);g.addColorStop(0,p[1]);g.addColorStop(1,p[2]);ctx.fillStyle=g;ctx.fillRect(0,540,w,468);}
+ // detailed biome-specific midground assets
+ if(i===0||i===4||i===8){ // forest with trunks, branches, layered leaves and undergrowth
+  for(let n=0;n<18;n++){let x=rand()*850-65,base=650+rand()*300,tw=22+rand()*38,ht=270+rand()*330;ctx.fillStyle=["#493d35","#5d4a3d","#324b3e"][n%3];path([[x-tw,base],[x-tw*.55,base-ht],[x+tw*.4,base-ht],[x+tw,base]],ctx.fillStyle);for(let b=0;b<5;b++){let yy=base-ht+40+b*38,dir=b%2?1:-1;line([[x,yy+30],[x+dir*(70+rand()*75),yy-35],[x+dir*(115+rand()*70),yy-80]],"#5a493d",9+rand()*12);}for(let q=0;q<28;q++){let lx=x+(rand()-.5)*190,ly=base-ht+rand()*190,rr=16+rand()*34;ellipse(lx,ly,rr,rr*.72,[i===4?"#bd744a":i===8?"#43a77e":"#4b9866",i===4?"#e2a363":i===8?"#77d79a":"#82bd72","#285d4d"][q%3]);}}
+  for(let n=0;n<90;n++){let x=rand()*w,y=730+rand()*278;line([[x,y],[x+(rand()-.5)*35,y-15-rand()*35]],i===4?"#e8a25d":"#8fc878",3+rand()*7);}
+ } else if(i===2){ // coral garden and sea plants
+  for(let n=0;n<36;n++){let x=rand()*w,y=760+rand()*210;ctx.strokeStyle=["#f58e80","#f2c66e","#b48de0","#5ed0ba"][n%4];ctx.lineWidth=8+rand()*12;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+(rand()-.5)*20,y-45-rand()*75);for(let b=0;b<3;b++){let yy=y-40-b*25;ctx.moveTo(x,yy);ctx.lineTo(x-25-rand()*25,yy-20);ctx.moveTo(x,yy);ctx.lineTo(x+25+rand()*25,yy-20);}ctx.stroke();}
+  for(let n=0;n<14;n++){let x=rand()*w,y=620+rand()*320;ellipse(x,y,20+rand()*30,10+rand()*15,"#e7a18c");}
+ } else if(i===3){ // wet city street, lamps, cables and signs
+  path([[0,720],[720,665],[720,1008],[0,1008]],"#243943");for(let n=0;n<7;n++){let x=30+n*112;line([[x,400],[x,720]],"#202f3c",10);line([[x,430],[x+42,430],[x+42,455]],"#d5c18b",4);glow(x+42,460,45,"#f5d38a55");}
+  for(let n=0;n<45;n++){let x=rand()*w,y=500+rand()*480;line([[x,y],[x+rand()*12,y+15]],"#c7e8ee88",2);}
+ } else if(i===5){ // rubble, broken columns, arch and violet fog
+  for(let n=0;n<15;n++){let x=rand()*w,y=700+rand()*250;ctx.save();ctx.translate(x,y);ctx.rotate((rand()-.5)*.4);ctx.fillStyle=["#7a708d","#514b69","#a093a8"][n%3];ctx.fillRect(-35,-12,70,25);ctx.restore();}
+  for(let n=0;n<4;n++){let x=n*210+20;ctx.strokeStyle="#a79ab5";ctx.lineWidth=25;ctx.beginPath();ctx.moveTo(x,790);ctx.lineTo(x,570);ctx.stroke();line([[x-25,570],[x+25,570],[x+40,590]],"#c2b5c8",18);}
+ } else if(i===6||i===7){ // snow drifts, ice spires and wind-carved ridges
+  for(let n=0;n<26;n++){let x=rand()*w,y=640+rand()*320;path([[x-45,y+25],[x,y-35-rand()*70],[x+50,y+25]],"#e4f5f4");line([[x,y-35],[x+8,y+20]],"#a6d2de",4);}
+  for(let n=0;n<100;n++){let x=rand()*w,y=rand()*h;ellipse(x,y,1+rand()*3,2+rand()*5,"#ffffffaa");}
+ } else if(i===9){ // crystal chamber, faceted columns and luminous runes
+  for(let n=0;n<18;n++){let x=rand()*w,y=600+rand()*360,hh=90+rand()*250,ww=25+rand()*55;path([[x-ww,y],[x-ww*.4,y-hh],[x,y-hh-30],[x+ww*.5,y-hh],[x+ww,y]],["#b9c9ff99","#83f2e399","#f2b9ff99"][n%3],"#e5e3ff88",3);line([[x,y-hh-25],[x+ww*.25,y]],"#ffffff88",3);}}
+ // foreground framing: oversized leaves, rocks, roots, reeds, or architecture
+ for(let n=0;n<48;n++){let x=rand()*w,y=850+rand()*190,rr=8+rand()*34;ellipse(x,y,rr,rr*.55,i===1?"#311f2d":i===5?"#302c48":i===9?"#34366c":"#173b39");}
+ // film grain and fine speckle texture
+ for(let n=0;n<9000;n++){let x=rand()*w,y=rand()*h,a=rand()*.1;ctx.fillStyle=rand()>.5?"rgba(255,255,255,"+a+")":"rgba(0,0,0,"+a+")";ctx.fillRect(x,y,1+rand()*2,1+rand()*2);}
+ // vignette and subtle cinematic bloom
+ let v=ctx.createRadialGradient(w*.5,h*.45,180,w*.5,h*.5,760);v.addColorStop(0,"transparent");v.addColorStop(1,"#07101b99");ctx.fillStyle=v;ctx.fillRect(0,0,w,h);
+ return canvas;
 }
 function cardMarkup(p,i){const file=String(p.id).padStart(3,"0");return '<article class="demo"><h2>'+String(i+1).padStart(2,"0")+' · '+p.name+'</h2><p>'+p.scene+' · '+p.type+'</p><div class="stage"><div class="card" style="--glow:'+palettes[i][0]+'">'+scene(i)+'<img class="pokemon" src="./assets/'+file+'.svg" alt="'+p.name+'" draggable="false"><span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span><div class="caption"><b>'+p.name+'</b><small>'+p.type+' · NO. '+String(p.id).padStart(3,"0")+'</small></div><div class="shine"></div><div class="gloss"></div></div></div></article>'}
 document.getElementById("grid").innerHTML=pokemon.map(cardMarkup).join("");
