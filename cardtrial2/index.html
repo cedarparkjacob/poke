@@ -108,9 +108,9 @@ function scene(i){
  for(let n=0;n<9000;n++){let x=rand()*w,y=rand()*h,a=rand()*.1;ctx.fillStyle=rand()>.5?"rgba(255,255,255,"+a+")":"rgba(0,0,0,"+a+")";ctx.fillRect(x,y,1+rand()*2,1+rand()*2);}
  // vignette and subtle cinematic bloom
  let v=ctx.createRadialGradient(w*.5,h*.45,180,w*.5,h*.5,760);v.addColorStop(0,"transparent");v.addColorStop(1,"#07101b99");ctx.fillStyle=v;ctx.fillRect(0,0,w,h);
- return canvas;
+ return canvas.toDataURL("image/jpeg",0.92);
 }
-function cardMarkup(p,i){const file=String(p.id).padStart(3,"0");return '<article class="demo"><h2>'+String(i+1).padStart(2,"0")+' · '+p.name+'</h2><p>'+p.scene+' · '+p.type+'</p><div class="stage"><div class="card" style="--glow:'+palettes[i][0]+'">'+scene(i)+'<img class="pokemon" src="./assets/'+file+'.svg" alt="'+p.name+'" draggable="false"><span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span><div class="caption"><b>'+p.name+'</b><small>'+p.type+' · NO. '+String(p.id).padStart(3,"0")+'</small></div><div class="shine"></div><div class="gloss"></div></div></div></article>'}
+function cardMarkup(p,i){const file=String(p.id).padStart(3,"0");return '<article class="demo"><h2>'+String(i+1).padStart(2,"0")+' · '+p.name+'</h2><p>'+p.scene+' · '+p.type+'</p><div class="stage"><div class="card" style="--glow:'+palettes[i][0]+'"'><img class="scene" src="'+scene(i)+'" alt="" aria-hidden="true"><img class="pokemon" src="./assets/'+file+'.svg" alt="'+p.name+'" draggable="false"><span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span><div class="caption"><b>'+p.name+'</b><small>'+p.type+' · NO. '+String(p.id).padStart(3,"0")+'</small></div><div class="shine"></div><div class="gloss"></div></div></div></article>'}
 document.getElementById("grid").innerHTML=pokemon.map(cardMarkup).join("");
 let auto=true;const stages=[...document.querySelectorAll(".stage")];
 function tilt(card,x,y){const r=card.getBoundingClientRect(),nx=Math.max(0,Math.min(1,(x-r.left)/r.width)),ny=Math.max(0,Math.min(1,(y-r.top)/r.height));const rx=(.5-ny)*60,ry=(nx-.5)*60,dx=(nx-.5)*30,dy=(ny-.5)*30;card.style.setProperty("--rx",rx+"deg");card.style.setProperty("--ry",ry+"deg");card.style.setProperty("--dx",dx+"px");card.style.setProperty("--dy",dy+"px");card.style.setProperty("--shine",(nx-.5)*180)}
