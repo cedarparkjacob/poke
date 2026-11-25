@@ -13,13 +13,13 @@ header{max-width:1400px;margin:auto;padding:30px 24px 18px}.topline{display:flex
 .demo{background:linear-gradient(150deg,#141d32,#0d1323);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0;box-shadow:0 12px 35px #0005}.demo h2{font-size:15px;margin:0 0 3px}.demo p{font-size:12px;color:var(--muted);margin:0 0 12px;min-height:34px}
 .stage{height:350px;display:grid;place-items:center;perspective:1000px;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}
 .card{width:min(100%,220px);aspect-ratio:3/4.2;position:relative;transform-style:preserve-3d;will-change:transform;border-radius:17px;overflow:hidden;background:#263b52;box-shadow:0 22px 42px #000a,0 0 0 1px #ffffff45;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:rotateX(var(--rx)) rotateY(var(--ry))}
-.scene{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:translate3d(calc(var(--dx)*-.12),calc(var(--dy)*-.12),1px) scale(1.12);filter:saturate(1.12) contrast(1.06);object-position:var(--focus,center);transition:filter .25s}
-.scene-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#07101b18 0%,#07101b08 34%,#07101b55 72%,#07101bc9 100%);pointer-events:none;transform:translateZ(2px)}\n.pokemon{position:absolute;z-index:2;width:76%;height:72%;left:12%;top:9%;object-fit:contain;filter:drop-shadow(0 12px 8px #07121d99);transform:translate3d(calc(var(--dx)*.75),calc(var(--dy)*.75),58px)}
+.scene{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:scale(1.12);filter:saturate(1.12) contrast(1.06);object-position:var(--focus,center);transition:filter .25s}
+.scene-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#07101b18 0%,#07101b08 34%,#07101b55 72%,#07101bc9 100%);pointer-events:none;transform:translateZ(2px)}\n.pokemon{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:3!important;width:82%!important;height:76%!important;left:9%!important;top:5%!important;object-fit:contain!important;filter:drop-shadow(0 14px 10px #07121ddd) drop-shadow(0 0 8px #ffffff88);transform:translate3d(calc(var(--dx)*.75),calc(var(--dy)*.75),0)!important;pointer-events:none}
 .spark{position:absolute;z-index:4;color:#fff;text-shadow:0 0 10px var(--glow,#fff);font-size:21px;transform:translateZ(72px)}.spark.a{left:13%;top:12%}.spark.b{right:12%;top:23%;font-size:17px}.spark.c{right:17%;bottom:29%;font-size:24px}
 .caption{z-index:5;position:absolute;left:10px;right:10px;bottom:9px;padding:8px 10px;border-radius:9px;background:#17213bbd;backdrop-filter:blur(9px);color:#fff;transform:translate3d(calc(var(--dx)*.15),calc(var(--dy)*.15),90px);border:1px solid #ffffff60;box-shadow:0 5px 16px #0005}.caption b{display:block;font-size:13px;letter-spacing:.09em}.caption small{font-size:9px;opacity:.85;letter-spacing:.12em}
 .shine{z-index:6;position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 35%,#fff0 43%,#ffffff9c 49%,#d5f8ff66 53%,transparent 61%);transform:translateX(calc(var(--shine,0)*1px)) rotate(12deg) translateZ(105px);mix-blend-mode:screen;pointer-events:none}
 .gloss{z-index:7;position:absolute;inset:0;border-radius:17px;background:linear-gradient(135deg,#fff5 0%,transparent 24% 70%,#fff2 100%);border:1px solid #ffffff55;transform:translateZ(112px);pointer-events:none}
-.card:after{content:"";position:absolute;inset:0;border-radius:17px;box-shadow:inset 0 0 0 2px #ffffff30,inset 0 0 26px #d9f8ff22;transform:translateZ(114px);pointer-events:none}
+.card:after{content:"";position:absolute;z-index:8;inset:0;border-radius:17px;box-shadow:inset 0 0 0 2px #ffffff30,inset 0 0 26px #d9f8ff22;pointer-events:none}
 footer{max-width:1400px;margin:0 auto;padding:0 24px 35px;color:#7f8da8;font-size:11px}
 @media(max-width:600px){header{padding:24px 16px 14px}.controls{padding:0 16px 18px}.grid{padding:0 16px 36px;gap:14px}.stage{height:330px}.topline{align-items:flex-start}}
 </style>
@@ -68,7 +68,7 @@ function cardMarkup(p,i){
   <p>${p.scene} · ${p.type}</p>
   <div class="stage"><div class="card" style="--glow:${palettes[i][0]}">
    <img class="scene" src="${background.url}" style="--focus:${background.focus}" alt="" aria-hidden="true" loading="lazy" decoding="async"><div class="scene-shade"></div>
-   <img class="pokemon" src="./assets/${file}.svg" alt="${p.name}" draggable="false">
+   <img class="pokemon" src="./assets/${file}.svg" alt="${p.name}" draggable="false" loading="eager" decoding="async">
    <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
    <div class="caption"><b>${p.name}</b><small>${p.type} · NO. ${file}</small></div>
    <div class="shine"></div><div class="gloss"></div>
