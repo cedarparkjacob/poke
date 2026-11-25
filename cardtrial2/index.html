@@ -13,9 +13,9 @@ header{max-width:1400px;margin:auto;padding:30px 24px 18px}.topline{display:flex
 .demo{background:linear-gradient(150deg,#141d32,#0d1323);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0;box-shadow:0 12px 35px #0005}.demo h2{font-size:15px;margin:0 0 3px}.demo p{font-size:12px;color:var(--muted);margin:0 0 12px;min-height:34px}
 .stage{height:350px;display:grid;place-items:center;perspective:1000px;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}
 .card{width:min(100%,220px);aspect-ratio:3/4.2;position:relative;transform-style:flat;will-change:transform;border-radius:17px;overflow:hidden;background:#263b52;box-shadow:0 22px 42px #000a,0 0 0 1px #ffffff45;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:rotateX(var(--rx)) rotateY(var(--ry))}
-.scene{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:scale(1.12);filter:saturate(1.12) contrast(1.06);object-position:var(--focus,center);transition:filter .25s}
+.scene{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:scale(1.06);filter:saturate(1.12) contrast(1.06);object-position:var(--focus,center);transition:filter .25s}
 .scene-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#07101b18 0%,#07101b08 34%,#07101b55 72%,#07101bc9 100%);pointer-events:none;}
-.pokemon{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:3!important;width:82%!important;height:76%!important;left:9%!important;top:5%!important;object-fit:contain!important;filter:drop-shadow(0 14px 10px #07121ddd) drop-shadow(0 0 8px #ffffff88);transform:translate3d(calc(var(--dx)*.75),calc(var(--dy)*.75),0)!important;pointer-events:none}
+.pokemon{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:3!important;width:94%!important;height:88%!important;left:3%!important;top:3%!important;object-fit:contain!important;filter:drop-shadow(0 5px 5px #07121d99) drop-shadow(0 0 4px #ffffff33);transform:translate3d(calc(var(--dx)*.35),calc(var(--dy)*.35),0)!important;pointer-events:none}
 .spark{position:absolute;z-index:4;color:#fff;text-shadow:0 0 10px var(--glow,#fff);font-size:21px;transform:none}.spark.a{left:13%;top:12%}.spark.b{right:12%;top:23%;font-size:17px}.spark.c{right:17%;bottom:29%;font-size:24px}
 .caption{z-index:5;position:absolute;left:10px;right:10px;bottom:9px;padding:8px 10px;border-radius:9px;background:#17213bbd;backdrop-filter:blur(9px);color:#fff;transform:translate3d(calc(var(--dx)*.15),calc(var(--dy)*.15),0);border:1px solid #ffffff60;box-shadow:0 5px 16px #0005}.caption b{display:block;font-size:13px;letter-spacing:.09em}.caption small{font-size:9px;opacity:.85;letter-spacing:.12em}
 .shine{z-index:6;position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 35%,#fff0 43%,#ffffff9c 49%,#d5f8ff66 53%,transparent 61%);transform:translateX(calc(var(--shine,0)*1px)) rotate(12deg);mix-blend-mode:screen;pointer-events:none}
@@ -26,30 +26,17 @@ footer{max-width:1400px;margin:0 auto;padding:0 24px 35px;color:#7f8da8;font-siz
 </style>
 </head>
 <body>
-<header><div class="topline"><div><h1>POKÉMON / 3D CARD LAB 02</h1><p class="sub">Ten Pokémon, ten distinct photographic environments. The scenes are real landscape, underwater, city, and cave photographs—not procedurally drawn shapes. Drag or swipe to tilt each card.</p></div><a class="back" href="../cardtrial/">← Mew Lab</a></div></header>
-<div class="controls"><button id="auto" class="active" type="button">Auto-wiggle: on</button><button id="reset" type="button">Reset angles</button><span class="hint">Tilt is limited to 30° · Drag farther without spinning</span></div>
-<main class="grid" id="grid"></main>
+<header><div class="topline"><div><h1>POKÉMON / 3D CARD LAB 02</h1><p class="sub">All 151 original Kanto Pokémon in photographic environments. Drag or swipe to tilt each card. More cards load as you scroll.</p></div><a class="back" href="../cardtrial/">← Mew Lab</a></div></header>
+<div class="controls"><button id="auto" class="active" type="button">Auto-wiggle: on</button><button id="reset" type="button">Reset angles</button><span class="hint">Tilt is limited to 30° · 20 cards load at a time</span></div>
+<main class="grid" id="grid"></main><div id="load-more" style="max-width:1400px;margin:-24px auto 42px;padding:0 24px;text-align:center;color:#9aa8c2"><button id="load-button" type="button" style="background:#1c2944;border:1px solid #394968;color:white;padding:11px 18px;border-radius:10px;font:inherit;cursor:pointer">Load 20 more</button><p id="load-status" class="hint">Showing 0 of 151 Pokémon</p></div>
 <footer>Pokémon character artwork: jnovack/pokemon-svg. Environment photographs are used under the Unsplash License. <a href="https://unsplash.com/license" target="_blank" rel="noopener" style="color:#aebee7">Unsplash License</a>. Photo credits: <a href="https://unsplash.com/photos/sunlight-filters-through-trees-onto-a-forest-path-_6l0XJKMS3A" target="_blank" rel="noopener" style="color:#aebee7">Kristaps Ungurs</a> · <a href="https://unsplash.com/photos/photo-of-lava-flowing-on-land-Aduh0KXCI1w" target="_blank" rel="noopener" style="color:#aebee7">Marc Szeglat</a> · <a href="https://unsplash.com/photos/underwater-coral-reef-teeming-with-life-MjEjRZrZX-o" target="_blank" rel="noopener" style="color:#aebee7">Nuraini Arsad</a> · <a href="https://unsplash.com/photos/a-lightning-storm-is-seen-over-a-city-at-night-cMBe2kYLsk0" target="_blank" rel="noopener" style="color:#aebee7">Frankie Lopez</a> · <a href="https://unsplash.com/photos/sunlight-through-autumn-forest-trees-ouPefPLmsns" target="_blank" rel="noopener" style="color:#aebee7">Pascal Bullan</a> · <a href="https://unsplash.com/photos/castle-ruins-on-a-hill-above-the-fog-at-sunrise-CEX9Y1gZQjg" target="_blank" rel="noopener" style="color:#aebee7">Andreas Slotosch</a> · <a href="https://unsplash.com/photos/a-mountain-covered-in-clouds-and-snow-espfJXO6-7A" target="_blank" rel="noopener" style="color:#aebee7">Greg Rosenke</a> · <a href="https://unsplash.com/photos/blue-icebergs-in-glacial-water-UBPKfhgocvA" target="_blank" rel="noopener" style="color:#aebee7">Bernd Dittrich</a> · <a href="https://unsplash.com/photos/a-sunlit-forest-path-with-purple-and-gold-foliage-HEcXapHYkpk" target="_blank" rel="noopener" style="color:#aebee7">Wolfgang Hasselmann</a> · <a href="https://unsplash.com/photos/cave-interior-with-textured-rock-formations-and-mineral-deposits-dFJqzA4NiM0" target="_blank" rel="noopener" style="color:#aebee7">iuliu illes</a></footer>
 <script>
-const pokemon=[
-{id:1,name:"BULBASAUR",type:"GRASS · POISON",scene:"Primeval forest"},
-{id:4,name:"CHARMANDER",type:"FIRE",scene:"Volcanic caldera"},
-{id:7,name:"SQUIRTLE",type:"WATER",scene:"Coastal tide pools"},
-{id:25,name:"PIKACHU",type:"ELECTRIC",scene:"Storm-lit meadow"},
-{id:133,name:"EEVEE",type:"NORMAL",scene:"Autumn woodland"},
-{id:94,name:"GENGAR",type:"GHOST · POISON",scene:"Haunted ruins"},
-{id:149,name:"DRAGONITE",type:"DRAGON · FLYING",scene:"Alpine cloud sea"},
-{id:131,name:"LAPRAS",type:"WATER · ICE",scene:"Glacial fjord"},
-{id:251,name:"CELEBI",type:"PSYCHIC · GRASS",scene:"Enchanted forest"},
-{id:150,name:"MEWTWO",type:"PSYCHIC",scene:"Psychic crystal chamber"}
-];
-const palettes=[
-["#b9e1a3","#4d8761","#173e37"],["#ffd18a","#bd5637","#40212b"],["#b4eaf1","#4e9db0","#174b68"],["#f8df9a","#a4aa55","#334f3c"],["#f2c99b","#a46d4e","#493c39"],["#b9a8df","#61518b","#282540"],["#d3edf4","#78a9c0","#344c70"],["#e4f5fb","#86b3c3","#31596c"],["#c7f0c4","#68c99a","#245e5b"],["#d5c8ff","#8875d2","#252c60"]
-];
 
-// Full photographic environments licensed for free use under the Unsplash License.
-// Each Pokémon gets a distinct real-world environment image rather than procedurally drawn shapes.
-const backgrounds=[
+const names=["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Caterpie","Metapod","Butterfree","Weedle","Kakuna","Beedrill","Pidgey","Pidgeotto","Pidgeot","Rattata","Raticate","Spearow","Fearow","Ekans","Arbok","Pikachu","Raichu","Sandshrew","Sandslash","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Clefairy","Clefable","Vulpix","Ninetales","Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish","Gloom","Vileplume","Paras","Parasect","Venonat","Venomoth","Diglett","Dugtrio","Meowth","Persian","Psyduck","Golduck","Mankey","Primeape","Growlithe","Arcanine","Poliwag","Poliwhirl","Poliwrath","Abra","Kadabra","Alakazam","Machop","Machoke","Machamp","Bellsprout","Weepinbell","Victreebel","Tentacool","Tentacruel","Geodude","Graveler","Golem","Ponyta","Rapidash","Slowpoke","Slowbro","Magnemite","Magneton","Farfetch’d","Doduo","Dodrio","Seel","Dewgong","Grimer","Muk","Shellder","Cloyster","Gastly","Haunter","Gengar","Onix","Drowzee","Hypno","Krabby","Kingler","Voltorb","Electrode","Exeggcute","Exeggutor","Cubone","Marowak","Hitmonlee","Hitmonchan","Lickitung","Koffing","Weezing","Rhyhorn","Rhydon","Chansey","Tangela","Kangaskhan","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Mr. Mime","Scyther","Jynx","Electabuzz","Magmar","Pinsir","Tauros","Magikarp","Gyarados","Lapras","Ditto","Eevee","Vaporeon","Jolteon","Flareon","Porygon","Omanyte","Omastar","Kabuto","Kabutops","Aerodactyl","Snorlax","Articuno","Zapdos","Moltres","Dratini","Dragonair","Dragonite","Mewtwo","Mew"];
+const localArt=new Set([1,4,7,25,94,131,133,149,150]);
+const pokemon=names.map((name,i)=>({id:i+1,name:name.toUpperCase(),type:"KANTO POKÉDEX",scene:"Original 151"}));
+const palettes=[["#b9e1a3"],["#ffd18a"],["#b4eaf1"],["#f8df9a"],["#f2c99b"],["#b9a8df"],["#d3edf4"],["#e4f5fb"],["#c7f0c4"],["#d5c8ff"]];
+[
  {url:"https://images.unsplash.com/photo-1760276050864-021f40aa0ee2?auto=format&fit=crop&w=1400&q=85",focus:"50% 52%",credit:"Kristaps Ungurs",source:"https://unsplash.com/photos/sunlight-filters-through-trees-onto-a-forest-path-_6l0XJKMS3A"},
  {url:"https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&w=1400&q=85",focus:"50% 55%",credit:"Marc Szeglat",source:"https://unsplash.com/photos/photo-of-lava-flowing-on-land-Aduh0KXCI1w"},
  {url:"https://images.unsplash.com/photo-1770535849271-b3caeb39a107?auto=format&fit=crop&w=1400&q=85",focus:"50% 55%",credit:"Nuraini Arsad",source:"https://unsplash.com/photos/underwater-coral-reef-teeming-with-life-MjEjRZrZX-o"},
@@ -61,29 +48,36 @@ const backgrounds=[
  {url:"https://images.unsplash.com/photo-1773221921891-91e111975aba?auto=format&fit=crop&w=1400&q=85",focus:"50% 50%",credit:"Wolfgang Hasselmann",source:"https://unsplash.com/photos/a-sunlit-forest-path-with-purple-and-gold-foliage-HEcXapHYkpk"},
  {url:"https://images.unsplash.com/photo-1775506434902-cf7fe717c079?auto=format&fit=crop&w=1400&q=85",focus:"50% 50%",credit:"iuliu illes",source:"https://unsplash.com/photos/cave-interior-with-textured-rock-formations-and-mineral-deposits-dFJqzA4NiM0"}
 ];
-function cardMarkup(p,i){
- const file=String(p.id).padStart(3,"0");
- const background=backgrounds[i];
- return `<article class="demo">
-  <h2>${String(i+1).padStart(2,"0")} · ${p.name}</h2>
-  <p>${p.scene} · ${p.type}</p>
-  <div class="stage"><div class="card" style="--glow:${palettes[i][0]}">
-   <img class="scene" src="${background.url}" style="--focus:${background.focus}" alt="" aria-hidden="true" loading="lazy" decoding="async"><div class="scene-shade"></div>
-   <img class="pokemon" src="./assets/${file}.svg" alt="${p.name}" draggable="false" loading="eager" decoding="async">
-   <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
-   <div class="caption"><b>${p.name}</b><small>${p.type} · NO. ${file}</small></div>
-   <div class="shine"></div><div class="gloss"></div>
-  </div></div>
- </article>`;
+let rendered=0,auto=true;
+const BATCH=20,grid=document.getElementById("grid"),loadButton=document.getElementById("load-button"),loadStatus=document.getElementById("load-status");
+function cardMarkup(p){
+ const file=String(p.id).padStart(3,"0"),background=backgrounds[(p.id-1)%backgrounds.length];
+ const art=localArt.has(p.id)?'./assets/'+file+'.svg':'https://raw.githubusercontent.com/jnovack/pokemon-svg/master/svg/'+p.id+'.svg';
+ return `<article class="demo"><h2>${file} · ${p.name}</h2><p>${p.scene} · ${p.type}</p>
+ <div class="stage"><div class="card" style="--glow:${palettes[(p.id-1)%palettes.length][0]}">
+ <img class="scene" src="${background.url}" style="--focus:${background.focus}" alt="" aria-hidden="true" loading="lazy" decoding="async"><div class="scene-shade"></div>
+ <img class="pokemon" src="${art}" alt="${p.name}" draggable="false" loading="lazy" decoding="async">
+ <div class="caption"><b>${p.name}</b><small>KANTO · NO. ${file}</small></div><div class="shine"></div><div class="gloss"></div>
+ </div></div></article>`;
 }
-document.getElementById("grid").innerHTML=pokemon.map(cardMarkup).join("");
-let auto=true;const stages=[...document.querySelectorAll(".stage")];
-function tilt(card,x,y){const r=card.getBoundingClientRect(),nx=Math.max(0,Math.min(1,(x-r.left)/r.width)),ny=Math.max(0,Math.min(1,(y-r.top)/r.height));const rx=(.5-ny)*60,ry=(nx-.5)*60,dx=(nx-.5)*30,dy=(ny-.5)*30;card.style.setProperty("--rx",rx+"deg");card.style.setProperty("--ry",ry+"deg");card.style.setProperty("--dx",dx+"px");card.style.setProperty("--dy",dy+"px");card.style.setProperty("--shine",(nx-.5)*180)}
+function loadBatch(){
+ if(rendered>=151)return;
+ const batch=pokemon.slice(rendered,rendered+BATCH);
+ grid.insertAdjacentHTML("beforeend",batch.map(cardMarkup).join(""));
+ rendered+=batch.length;loadStatus.textContent="Showing "+rendered+" of 151 Pokémon";
+ loadButton.textContent=rendered>=151?"All 151 Pokémon loaded":"Load 20 more";loadButton.disabled=rendered>=151;
+}
+loadButton.addEventListener("click",loadBatch);loadBatch();
+if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadBatch()},{rootMargin:"700px 0px"});observer.observe(document.getElementById("load-more"))}
+function tilt(card,x,y){const r=card.getBoundingClientRect(),nx=Math.max(0,Math.min(1,(x-r.left)/r.width)),ny=Math.max(0,Math.min(1,(y-r.top)/r.height));card.style.setProperty("--rx",(.5-ny)*60+"deg");card.style.setProperty("--ry",(nx-.5)*60+"deg");card.style.setProperty("--dx",(nx-.5)*12+"px");card.style.setProperty("--dy",(ny-.5)*12+"px");card.style.setProperty("--shine",(nx-.5)*120)}
 function reset(card){["--rx","--ry","--dx","--dy","--shine"].forEach(k=>card.style.removeProperty(k))}
-stages.forEach(stage=>{const card=stage.querySelector(".card");stage.addEventListener("pointermove",e=>{if(e.pointerType==="touch"&&e.buttons===0)return;tilt(card,e.clientX,e.clientY)});stage.addEventListener("pointerleave",()=>{if(!auto)reset(card)});stage.addEventListener("pointerdown",e=>{stage.setPointerCapture?.(e.pointerId);tilt(card,e.clientX,e.clientY)})});
-function animate(t){if(auto)stages.forEach((stage,i)=>{if(stage.matches(":hover"))return;const c=stage.querySelector(".card"),a=t/1000+i*.61;c.style.setProperty("--rx",Math.sin(a*1.1)*11+"deg");c.style.setProperty("--ry",Math.cos(a*.83)*17+"deg");c.style.setProperty("--dx",Math.cos(a)*8+"px");c.style.setProperty("--dy",Math.sin(a*1.07)*8+"px");c.style.setProperty("--shine",Math.sin(a)*85)});requestAnimationFrame(animate)}
-document.getElementById("auto").addEventListener("click",e=>{auto=!auto;e.currentTarget.classList.toggle("active",auto);e.currentTarget.textContent="Auto-wiggle: "+(auto?"on":"off");if(!auto)stages.forEach(s=>reset(s.querySelector(".card")))});
-document.getElementById("reset").addEventListener("click",()=>stages.forEach(s=>reset(s.querySelector(".card"))));
+grid.addEventListener("pointermove",e=>{const s=e.target.closest(".stage");if(s&&!(e.pointerType==="touch"&&e.buttons===0))tilt(s.querySelector(".card"),e.clientX,e.clientY)});
+grid.addEventListener("pointerdown",e=>{const s=e.target.closest(".stage");if(s)tilt(s.querySelector(".card"),e.clientX,e.clientY)});
+grid.addEventListener("pointerleave",()=>{if(!auto)grid.querySelectorAll(".card").forEach(reset)},true);
+function animate(t){if(auto)grid.querySelectorAll(".card").forEach((card,i)=>{if(card.closest(".demo").matches(":hover"))return;const n=Number(card.closest(".demo").querySelector("h2").textContent.slice(0,3))||i,a=t/1000+n*.061;card.style.setProperty("--rx",Math.sin(a*1.1)*6+"deg");card.style.setProperty("--ry",Math.cos(a*.83)*9+"deg");card.style.setProperty("--dx",Math.cos(a)*2+"px");card.style.setProperty("--dy",Math.sin(a*1.07)*2+"px");card.style.setProperty("--shine",Math.sin(a)*45)});requestAnimationFrame(animate)}
+document.getElementById("auto").addEventListener("click",e=>{auto=!auto;e.currentTarget.classList.toggle("active",auto);e.currentTarget.textContent="Auto-wiggle: "+(auto?"on":"off");if(!auto)grid.querySelectorAll(".card").forEach(reset)});
+document.getElementById("reset").addEventListener("click",()=>grid.querySelectorAll(".card").forEach(reset));
 requestAnimationFrame(animate);
+
 </script>
 </body></html>
