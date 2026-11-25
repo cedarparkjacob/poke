@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b16">
+<title>Mew — 3D Card Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#080b16;--panel:#11182a;--line:#27324a;--muted:#93a0bb;--pink:#f3a6e4;--cyan:#8be8ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#29325a 0,#10172b 34%,var(--bg) 72%);color:#f5f7ff;font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{max-width:1400px;margin:auto;padding:30px 24px 18px}h1{font-size:clamp(28px,5vw,48px);line-height:1;margin:0 0 10px;letter-spacing:-.045em}.sub{color:var(--muted);max-width:760px;margin:0}.topline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.back{color:#b9c9ff;text-decoration:none;border:1px solid var(--line);padding:8px 12px;border-radius:10px}.back:hover{background:#1b2540}
+.controls{max-width:1400px;margin:0 auto;padding:0 24px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.controls button{background:#1c2944;border:1px solid #394968;color:white;padding:10px 14px;border-radius:10px;font:inherit;cursor:pointer}.controls button.active{background:#47355f;border-color:#b98ad5}.hint{color:var(--muted);font-size:13px}
+.grid{max-width:1400px;margin:auto;padding:0 24px 50px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:22px}
+.demo{background:linear-gradient(150deg,#141d32,#0d1323);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0;box-shadow:0 12px 35px #0005}.demo h2{font-size:15px;margin:0 0 3px}.demo p{font-size:12px;color:var(--muted);margin:0 0 12px;min-height:34px}
+.stage{height:340px;display:grid;place-items:center;perspective:900px;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}.card{width:min(100%,220px);aspect-ratio:3/4.2;position:relative;transform-style:preserve-3d;will-change:transform;border-radius:17px;overflow:hidden;background:#b7a0d2;box-shadow:0 22px 40px #0009,0 0 0 1px #ffffff38;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:rotateX(var(--rx)) rotateY(var(--ry))}
+.art{position:absolute;inset:0;width:100%;height:100%;display:block}.base{position:absolute;inset:0;background:linear-gradient(145deg,#f8d6ef,#a9b5ef 55%,#625c9d);transform:translateZ(0)}
+.layer{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}.mew{position:absolute;width:75%;height:76%;left:12.5%;top:9%;filter:drop-shadow(0 8px 7px #49365d77);transform:translate3d(calc(var(--dx)*.45),calc(var(--dy)*.45),28px)}
+.orb{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff 0 5%,#c7f5ff 18%,#a18ee9 55%,#6c68ad 72%,#ffffff55 74%);box-shadow:0 0 20px #b7efff99,inset -8px -9px 16px #3d397655;transform:translateZ(42px)}
+.spark{position:absolute;color:#fff8ff;text-shadow:0 0 9px white;font-size:20px;transform:translateZ(55px)}
+.shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 35%,#fff0 43%,#ffffff8c 49%,#d5f8ff55 53%,transparent 61%);transform:translateX(calc(var(--shine,0)*1px)) rotate(12deg) translateZ(70px);mix-blend-mode:screen;pointer-events:none}
+.gloss{position:absolute;inset:0;border-radius:17px;background:linear-gradient(135deg,#fff5 0%,transparent 25% 70%,#fff2 100%);border:1px solid #ffffff55;transform:translateZ(75px);pointer-events:none}
+.caption{position:absolute;left:10px;right:10px;bottom:9px;padding:8px 10px;border-radius:9px;background:#2a2454a8;backdrop-filter:blur(8px);color:#fff;transform:translateZ(32px);border:1px solid #ffffff50}.caption b{display:block;font-size:13px;letter-spacing:.08em}.caption small{font-size:9px;opacity:.8;letter-spacing:.12em}
+.v2 .mew{transform:translate3d(calc(var(--dx)*.7),calc(var(--dy)*.7),52px)}.v2 .orb{transform:translate3d(calc(var(--dx)*-.18),calc(var(--dy)*-.18),20px)}
+.v3 .card{box-shadow:0 0 0 2px #f7d9ff,0 0 25px #ee9cf4aa,0 22px 40px #0009}.v3 .mew{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 13px 7px #634c8b)}.v3 .shine{mix-blend-mode:color-dodge}
+.v4 .mew{width:80%;left:10%;top:8%;transform:translate3d(calc(var(--dx)*.28),calc(var(--dy)*.28),18px)}.v4 .orb{transform:translate3d(calc(var(--dx)*-.35),calc(var(--dy)*-.35),65px);width:48px;height:48px}
+.v5 .card{transform:rotateX(calc(var(--rx)*.8)) rotateY(calc(var(--ry)*.8)) rotateZ(calc(var(--ry)*.035))}.v5 .mew{transform:translate3d(calc(var(--dx)*.55),calc(var(--dy)*.55),36px) rotateZ(calc(var(--ry)*-.035))}
+.v6 .mew{transform:translate3d(calc(var(--dx)*.9),calc(var(--dy)*.9),70px)}.v6 .caption{transform:translateZ(95px)}.v6 .shine{transform:translateX(calc(var(--shine,0)*1px)) rotate(12deg) translateZ(110px)}
+.v7 .card{border:3px solid #f9e4ff}.v7 .mew{transform:translate3d(calc(var(--dx)*.35),calc(var(--dy)*.35),24px)}.v7 .spark{font-size:26px}
+.v8 .base{background:radial-gradient(ellipse at 50% 40%,#fce8ff,#9edce9 45%,#5d69a9 100%)}.v8 .mew{transform:translate3d(calc(var(--dx)*.5),calc(var(--dy)*.5),45px) scale(calc(1 + var(--depth,0)*.0005))}
+.v9 .card{filter:saturate(1.18) contrast(1.06)}.v9 .mew{transform:translate3d(calc(var(--dx)*.62),calc(var(--dy)*.62),42px)}.v9 .shine{background:linear-gradient(105deg,transparent 25%,#fff0 40%,#fff9 49%,#9df8ff88 52%,transparent 65%)}
+.v10 .mew{transform:translate3d(calc(var(--dx)*.75),calc(var(--dy)*.75),58px)}.v10 .orb{transform:translate3d(calc(var(--dx)*-.3),calc(var(--dy)*-.3),78px)}.v10 .caption{transform:translate3d(calc(var(--dx)*.15),calc(var(--dy)*.15),90px)}
+@media(max-width:600px){header{padding:24px 16px 14px}.controls{padding:0 16px 18px}.grid{padding:0 16px 36px;gap:14px}.stage{height:320px}}
+</style>
+</head>
+<body>
+<header><div class="topline"><div><h1>MEW / 3D CARD LAB</h1><p class="sub">Ten different takes on the layered 2D-to-3D card illusion. Drag, swipe, or move your pointer over a card to tilt it in every direction.</p></div><a class="back" href="../">← Pocketdex</a></div></header>
+<div class="controls"><button id="auto" class="active" type="button">Auto-wiggle: on</button><button id="reset" type="button">Reset angles</button><span class="hint">Pointer tilt: up to 30° · Touch: drag across a card</span></div>
+<main class="grid" id="grid"></main>
+<script>
+const variants=[
+["01 · Classic foil","Simple layered parallax with a moving foil reflection."],
+["02 · Deep cutout","Foreground Pokémon and background drift at different speeds."],
+["03 · Holo glow","Neon edge light and a brighter holographic sweep."],
+["04 · Floating orb","The energy orb sits forward of the character."],
+["05 · Gentle roll","Adds a subtle roll to the normal pitch and yaw."],
+["06 · Extreme depth","Large separation between the character, title, and shine."],
+["07 · Framed showcase","A bright raised frame and extra star glints."],
+["08 · Dreamscape","Soft radial background with a slow floating character."],
+["09 · Prism foil","More saturated art with a sharp diagonal prism sweep."],
+["10 · Layer stack","Character, orb, and title each occupy their own depth plane."]
+];
+const mew=`<svg class="mew" viewBox="0 0 220 250" aria-label="Stylized Mew illustration" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="body" x2="1" y2="1"><stop stop-color="#fff0fa"/><stop offset=".45" stop-color="#f4b9e7"/><stop offset="1" stop-color="#b978c9"/></linearGradient><linearGradient id="tail" x2="1" y2="0"><stop stop-color="#f6c5ef"/><stop offset="1" stop-color="#a77bd0"/></linearGradient></defs>
+<path d="M128 150 C190 128 197 58 161 34 C137 18 119 44 143 61 C164 78 151 111 112 121" fill="none" stroke="url(#tail)" stroke-width="12" stroke-linecap="round"/><path d="M128 150 C190 128 197 58 161 34" fill="none" stroke="#fff2ff" stroke-width="3" stroke-linecap="round" opacity=".65"/>
+<path d="M93 79 Q67 48 57 67 Q53 78 76 102 L72 143 Q66 174 89 190 Q110 209 139 185 Q160 166 145 132 L136 98 Q153 73 139 65 Q126 57 111 84Z" fill="url(#body)" stroke="#a96dbd" stroke-width="2"/>
+<path d="M85 91 Q67 71 63 75 Q61 83 81 105 M133 91 Q149 70 146 67" fill="none" stroke="#ffeaff" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="98" cy="119" rx="5" ry="9" fill="#39436f"/><ellipse cx="126" cy="119" rx="5" ry="9" fill="#39436f"/><circle cx="99" cy="116" r="2" fill="white"/><circle cx="127" cy="116" r="2" fill="white"/>
+<path d="M106 136 Q112 141 118 136" fill="none" stroke="#b66a9f" stroke-width="2" stroke-linecap="round"/><ellipse cx="88" cy="133" rx="7" ry="3" fill="#ef91c7" opacity=".7"/><ellipse cx="137" cy="133" rx="7" ry="3" fill="#ef91c7" opacity=".7"/>
+<path d="M95 178 Q81 196 70 193 Q61 191 70 182 M132 178 Q145 195 155 188 Q162 183 149 176" fill="none" stroke="#d995d4" stroke-width="9" stroke-linecap="round"/>
+<path d="M104 85 Q92 67 99 51 Q104 42 111 53 Q119 66 115 86" fill="#f7d2ef" opacity=".8"/>
+</svg>`;
+function cardMarkup(i){return `<article class="demo"><h2>${variants[i][0]}</h2><p>${variants[i][1]}</p><div class="stage"><div class="card v${i+1}"><div class="base"></div><svg class="art" viewBox="0 0 220 308" preserveAspectRatio="none"><defs><radialGradient id="bg${i}" cx="50%" cy="40%"><stop stop-color="#fff4ff" stop-opacity=".8"/><stop offset="1" stop-color="#7265aa" stop-opacity=".15"/></radialGradient></defs><rect width="220" height="308" fill="url(#bg${i})"/><g fill="none" stroke="#fff" opacity=".5"><circle cx="110" cy="145" r="90"/><circle cx="110" cy="145" r="112" stroke-dasharray="3 8"/></g></svg><div class="layer"><span class="orb" style="width:39px;height:39px;left:17%;top:26%"></span><span class="orb" style="width:18px;height:18px;right:15%;top:43%;opacity:.8"></span>${mew}<span class="spark" style="left:15%;top:13%">✦</span><span class="spark" style="right:13%;top:22%">✧</span><span class="spark" style="right:18%;bottom:29%">✦</span><div class="caption"><b>MEW EX</b><small>PSYCHIC · DREAMWAVE</small></div><div class="shine"></div><div class="gloss"></div></div></div></div></article>`}
+document.getElementById("grid").innerHTML=variants.map((_,i)=>cardMarkup(i)).join("");
+let auto=true,raf=0,last=0;const stages=[...document.querySelectorAll(".stage")];
+function setTilt(card,x,y){const rect=card.getBoundingClientRect(),nx=(x-rect.left)/rect.width,ny=(y-rect.top)/rect.height;const ry=(nx-.5)*60,rx=(.5-ny)*60,dx=(nx-.5)*30,dy=(ny-.5)*30;card.style.setProperty("--rx",rx+"deg");card.style.setProperty("--ry",ry+"deg");card.style.setProperty("--dx",dx+"px");card.style.setProperty("--dy",dy+"px");card.style.setProperty("--shine",(nx-.5)*180);card.style.setProperty("--depth",Math.abs(dx)+Math.abs(dy))}
+function reset(card){["--rx","--ry","--dx","--dy","--shine","--depth"].forEach(p=>card.style.removeProperty(p))}
+stages.forEach(stage=>{const card=stage.querySelector(".card");stage.addEventListener("pointermove",e=>{if(e.pointerType==="touch"&&e.buttons===0)return;setTilt(card,e.clientX,e.clientY)});stage.addEventListener("pointerleave",()=>{if(!auto)reset(card)});stage.addEventListener("pointerdown",e=>{stage.setPointerCapture?.(e.pointerId);setTilt(card,e.clientX,e.clientY)})});
+function animate(t){if(auto){stages.forEach((s,i)=>{if(s.matches(":hover"))return;const c=s.querySelector(".card"),a=t/1000+i*.72;const rx=Math.sin(a*1.25)*12,ry=Math.cos(a*.9)*18,dx=Math.cos(a)*9,dy=Math.sin(a*1.1)*9;c.style.setProperty("--rx",rx+"deg");c.style.setProperty("--ry",ry+"deg");c.style.setProperty("--dx",dx+"px");c.style.setProperty("--dy",dy+"px");c.style.setProperty("--shine",Math.sin(a)*90)})}raf=requestAnimationFrame(animate)}
+document.getElementById("auto").addEventListener("click",e=>{auto=!auto;e.currentTarget.classList.toggle("active",auto);e.currentTarget.textContent="Auto-wiggle: "+(auto?"on":"off");if(!auto)stages.forEach(s=>reset(s.querySelector(".card")))});
+document.getElementById("reset").addEventListener("click",()=>stages.forEach(s=>reset(s.querySelector(".card"))));
+raf=requestAnimationFrame(animate);
+</script>
+</body></html>
