@@ -68,6 +68,88 @@ function drawPsychedelic(canvas,seed,type,gen=1){
  const arch=(x,y,w,h,col)=>{ctx.beginPath();ctx.moveTo(x-w/2,y);ctx.lineTo(x-w/2,y-h*.58);ctx.quadraticCurveTo(x-w/2,y-h,x,y-h);ctx.quadraticCurveTo(x+w/2,y-h,x+w/2,y-h*.58);ctx.lineTo(x+w/2,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="#ffffff88";ctx.lineWidth=2;ctx.stroke()};
  const facet=(x,y,r,n,col)=>{ctx.save();ctx.translate(x,y);ctx.rotate(rand()*6);for(let i=0;i<n;i++){ctx.rotate(6.283/n);poly([[0,0],[r*.3,-r*.18],[r,-r*.25],[r*.55,r*.25]],i%2?col:C[(i+2)%8],"#ffffff66")}ctx.restore()};
  const star=(x,y,r,col)=>{ctx.save();ctx.translate(x,y);ctx.rotate(rand()*3);ctx.beginPath();for(let i=0;i<8;i++){let a=i*Math.PI/4,rr=i%2?r*.16:r;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}ctx.closePath();ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=12;ctx.fill();ctx.restore()};
+
+ if(gen>1){
+  // Generations II–IX use separate scene art direction and fixed regional palettes.
+  // The seed only changes the arrangement/details; it never changes the region identity.
+  const P={
+   2:["#160d24","#4c173f","#b63c69","#f08a79","#ffc76b","#ffe7a1","#6c9a78","#254c4a"], // Johto: shrine / dusk
+   3:["#031d35","#064b68","#087f8c","#12b8a6","#54d6c1","#f2a65a","#e65f46","#a6f0e2"], // Hoenn: ocean / volcanic
+   4:["#080e2c","#172b60","#344f91","#7898c9","#c5ddf2","#f3e5ff","#a58be8","#4b397e"], // Sinnoh: alpine / cosmic
+   5:["#090d25","#171c49","#273a78","#3567a3","#26c6c8","#6bf0e4","#f04f9b","#ffca70"], // Unova: neon metropolis
+   6:["#25102f","#58204d","#a43d72","#e17e9c","#f5c5a2","#ffe8c4","#8f70c9","#4b3b7c"], // Kalos: stained glass
+   7:["#172044","#394b8b","#e05c78","#f49a65","#ffd66e","#65d6c5","#248f9a","#f6e6ad"], // Alola: tropical sunset
+   8:["#101323","#252b48","#41466c","#77618b","#b17b80","#d8ad83","#e5d5b7","#5b8a83"], // Galar: gothic industry
+   9:["#27152c","#61314b","#b65b52","#e59a62","#f4ca83","#9dbd8c","#4f8990","#d8b8dc"]  // Paldea: Mediterranean
+  }[gen];
+  const fill=(c)=>{ctx.fillStyle=c;ctx.fillRect(0,0,W,H)};
+  const line=(pts,c,w=3)=>{ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=c;ctx.lineWidth=w;ctx.stroke()};
+  const disk=(x,y,r,c)=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fill()};
+  const frame=(c)=>{ctx.globalAlpha=1;ctx.strokeStyle=c;ctx.lineWidth=8;ctx.strokeRect(14,14,W-28,H-28);ctx.strokeStyle="#ffffff88";ctx.lineWidth=2;ctx.strokeRect(27,27,W-54,H-54)};
+  if(gen===2){
+   // JOHTO — deep dusk, layered cedar mountains, vermilion torii and a huge rising sun.
+   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,P[0]);g.addColorStop(.48,P[1]);g.addColorStop(1,P[2]);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   disk(270,245,150,P[4]);for(let r=1;r<8;r++){ctx.beginPath();ctx.arc(270,245,150-r*13,Math.PI,Math.PI*2);ctx.strokeStyle=P[r%8];ctx.lineWidth=3;ctx.stroke()}
+   for(let layer=0;layer<5;layer++){ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=W;x+=8){let y=350+layer*67+Math.sin(x*.014+layer)*32+Math.sin(x*.037+layer*2)*13;ctx.lineTo(x,y)}ctx.lineTo(W,H);ctx.closePath();ctx.fillStyle=P[(layer+1)%8];ctx.globalAlpha=.55+layer*.08;ctx.fill();ctx.globalAlpha=1}
+   for(let i=0;i<5;i++){let x=35+i*116,y=590+rand()*65,w=70+rand()*22;ctx.fillStyle=P[3];ctx.fillRect(x,y-125,w*.16,125);ctx.fillRect(x+w*.84,y-125,w*.16,125);ctx.fillRect(x-10,y-133,w+20,13);ctx.fillRect(x-4,y-151,w+8,11);ctx.fillRect(x+5,y-116,w-10,8)}
+   for(let i=0;i<75;i++){let x=rand()*W,y=rand()*H*.65;disk(x,y,1+rand()*2,P[5])}
+   for(let i=0;i<9;i++){let x=rand()*W,y=rand()*H*.7;ctx.strokeStyle=P[5];ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,10+rand()*20,0,6.283);ctx.stroke()}
+  }else if(gen===3){
+   // HOENN — turquoise underwater depth, giant sunlit surface, reef shelves and volcano islands.
+   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,P[4]);g.addColorStop(.2,P[3]);g.addColorStop(.58,P[1]);g.addColorStop(1,P[0]);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   disk(270,100,105,P[5]);for(let i=0;i<11;i++){ctx.beginPath();ctx.ellipse(270,100,115+i*12,28+i*6,0,0,6.283);ctx.strokeStyle=P[6];ctx.lineWidth=2;ctx.stroke()}
+   for(let j=0;j<12;j++){let y=300+j*39;ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<=W;x+=5)ctx.lineTo(x,y+Math.sin(x*.018+j*.7)*15+Math.sin(x*.047-j)*7);ctx.strokeStyle=P[j%8];ctx.globalAlpha=.5;ctx.lineWidth=2+j%4;ctx.stroke();ctx.globalAlpha=1}
+   for(let i=0;i<4;i++){let x=30+i*155,y=430+rand()*70;poly([[x-65,y],[x+4,y-220-rand()*100],[x+85,y]],P[6],"#ffdfaa");poly([[x-5,y-125],[x+4,y-220-rand()*100],[x+20,y-130]],P[5],"#ffffffaa")}
+   for(let i=0;i<24;i++){let x=rand()*W,y=400+rand()*330;ctx.strokeStyle=P[i%8];ctx.lineWidth=4+rand()*6;ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x-35,y-55,x+35,y-85,x+rand()*45,y-130);ctx.stroke();for(let j=0;j<3;j++)orb(x+rand()*30,y-j*36,5+rand()*9,P[(i+j)%8])}
+   for(let i=0;i<40;i++){let x=rand()*W,y=rand()*H;ctx.strokeStyle="#d9ffff99";ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,3+rand()*14,0,6.283);ctx.stroke()}
+  }else if(gen===4){
+   // SINNOH — frozen indigo peaks beneath an immense celestial astrolabe.
+   fill(P[0]);const sky=ctx.createLinearGradient(0,0,W,H);sky.addColorStop(0,P[1]);sky.addColorStop(.5,P[0]);sky.addColorStop(1,P[2]);ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+   for(let i=0;i<130;i++){let x=rand()*W,y=rand()*H*.68;star(x,y,1+rand()*4,P[4])}
+   disk(270,255,78,P[5]);for(let i=0;i<9;i++){ctx.beginPath();ctx.ellipse(270,255,100+i*27,38+i*14,-.48,0,6.283);ctx.strokeStyle=P[(i+2)%8];ctx.lineWidth=2+(i%3);ctx.stroke()}
+   for(let i=0;i<7;i++){let x=i*94-35,peak=300+rand()*120;poly([[x,650],[x+75,peak-170],[x+150,650]],P[(i%3)+2],"#e8f7ff");poly([[x+75,peak-170],[x+95,peak-90],[x+53,peak-100]],"#ffffff","#ffffff")}
+   for(let i=0;i<6;i++){ctx.beginPath();ctx.moveTo(0,590+i*28);ctx.lineTo(W,590+i*28);ctx.strokeStyle=P[3];ctx.globalAlpha=.35;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1}
+  }else if(gen===5){
+   // UNOVA — hard-edged magenta/cyan megacity, skyscrapers and electric transit grids.
+   fill(P[0]);for(let y=0;y<H;y+=12){ctx.fillStyle=y%24?P[1]:P[2];ctx.globalAlpha=.28;ctx.fillRect(0,y,W,5)}ctx.globalAlpha=1;
+   for(let i=0;i<17;i++){let x=i*34-8,w=22+rand()*23,h=180+rand()*420,y=680-h;ctx.fillStyle=P[i%8];ctx.globalAlpha=.65;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;ctx.strokeStyle=P[(i+4)%8];ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);for(let yy=y+12;yy<680;yy+=19)for(let xx=x+5;xx<x+w-2;xx+=10){ctx.fillStyle=(yy/19|0)%2?P[4]:P[6];ctx.fillRect(xx,yy,4,7)}}
+   for(let i=0;i<9;i++){let y=90+i*70;line([[0,y],[105,y],[155,y+38],[390,y+38],[445,y-10],[540,y-10]],P[i%8],3)}
+   for(let i=0;i<18;i++){let x=rand()*W,y=rand()*H;ctx.strokeStyle=P[i%8];ctx.lineWidth=2;ctx.strokeRect(x,y,25+rand()*45,12+rand()*35)}
+   for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(i*125,0);ctx.lineTo(i*125+70,H);ctx.strokeStyle=P[5];ctx.globalAlpha=.35;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+  }else if(gen===6){
+   // KALOS — jewel-toned stained glass, rose windows and ornate cathedral tracery.
+   fill(P[0]);for(let y=0;y<H;y+=38)for(let x=0;x<W;x+=38){ctx.save();ctx.translate(x,y);ctx.rotate((x+y)*.002);poly([[0,0],[38,0],[38,38],[0,38]],P[((x/38|0)+(y/38|0)*3)%8]+"bb","#ffffff66");ctx.restore()}
+   for(let w=0;w<3;w++){let x=95+w*175,y=250+(w%2)*90;ctx.save();ctx.translate(x,y);for(let k=0;k<24;k++){ctx.rotate(6.283/24);poly([[0,0],[-12,-112],[0,-148],[12,-112]],P[(k+w*2)%8],"#fff4")};ctx.beginPath();ctx.arc(0,0,155,0,6.283);ctx.strokeStyle=P[5];ctx.lineWidth=9;ctx.stroke();ctx.beginPath();ctx.arc(0,0,165,0,6.283);ctx.strokeStyle="#ffffff";ctx.lineWidth=2;ctx.stroke();ctx.restore()}
+   for(let i=0;i<5;i++){let x=30+i*120;arch(x,756,105,370,P[(i+3)%8]);}
+   for(let i=0;i<24;i++){let x=rand()*W,y=rand()*H;star(x,y,2+rand()*5,P[i%8])}
+  }else if(gen===7){
+   // ALOLA — vivid island sunset, palm silhouettes, layered turquoise surf and hibiscus.
+   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,P[1]);g.addColorStop(.34,P[2]);g.addColorStop(.62,P[3]);g.addColorStop(1,P[6]);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   disk(270,245,125,P[4]);for(let i=0;i<13;i++){ctx.beginPath();ctx.ellipse(270,245,130+i*10,18+i*5,0,0,6.283);ctx.strokeStyle=P[i%8];ctx.lineWidth=3;ctx.stroke()}
+   for(let i=0;i<6;i++){let x=35+i*105,base=630+rand()*45;ctx.strokeStyle=P[0];ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(x,base);ctx.quadraticCurveTo(x-30,430,x+rand()*30,300);ctx.stroke();for(let k=0;k<7;k++){let a=-2.8+k*.47;ctx.beginPath();ctx.moveTo(x+rand()*20,410-k*12);ctx.quadraticCurveTo(x+Math.cos(a)*70,340-k*12,x+Math.cos(a)*120,360-k*16);ctx.strokeStyle=P[0];ctx.lineWidth=7;ctx.stroke()}}
+   for(let j=0;j<9;j++){let y=560+j*27;ctx.beginPath();ctx.moveTo(0,y);ctx.quadraticCurveTo(270,y-60,W,y+5);ctx.strokeStyle=P[(j+4)%8];ctx.lineWidth=5;ctx.stroke()}
+   for(let i=0;i<7;i++){let x=rand()*W,y=rand()*H;ctx.save();ctx.translate(x,y);for(let k=0;k<5;k++){ctx.rotate(6.283/5);ctx.beginPath();ctx.ellipse(0,-17,10,22,0,0,6.283);ctx.fillStyle=P[(i+k)%8];ctx.fill()}disk(0,0,7,P[4]);ctx.restore()}
+  }else if(gen===8){
+   // GALAR — charcoal gothic skyline, pointed arches, clockwork and industrial smoke.
+   const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,P[0]);g.addColorStop(.55,P[1]);g.addColorStop(1,P[3]);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   for(let i=0;i<5;i++){let x=50+i*110,w=80+rand()*20,h=340+rand()*180,y=680-h;ctx.fillStyle=P[(i+2)%8];ctx.fillRect(x,y,w,h);ctx.strokeStyle=P[6];ctx.lineWidth=4;ctx.strokeRect(x,y,w,h);ctx.beginPath();ctx.moveTo(x-10,y+60);ctx.lineTo(x+w/2,y-55-rand()*35);ctx.lineTo(x+w+10,y+60);ctx.closePath();ctx.fillStyle=P[(i+4)%8];ctx.fill();for(let j=0;j<3;j++)arch(x+18+j*23, y+210,19,90,P[0])}
+   for(let i=0;i<6;i++){let x=50+i*88,y=120+(i%2)*95,r=35+rand()*17;ctx.beginPath();for(let k=0;k<40;k++){let a=k*6.283/40,rr=k%5===0?r:r*.83;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath();ctx.strokeStyle=P[5];ctx.lineWidth=5;ctx.stroke();ctx.beginPath();ctx.arc(x,y,r*.35,0,6.283);ctx.stroke()}
+   for(let i=0;i<12;i++){let x=rand()*W,y=rand()*250;ctx.beginPath();ctx.ellipse(x,y,45+rand()*45,16+rand()*18,rand(),0,6.283);ctx.fillStyle=P[2];ctx.globalAlpha=.13;ctx.fill();ctx.globalAlpha=1}
+   for(let i=0;i<8;i++)line([[i*80,0],[i*80+rand()*50,H]],P[6]+"88",1)
+  }else if(gen===9){
+   // PALDEA — warm terracotta cliff town, ceramic azulejo mosaic and crystalline mesas.
+   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,P[4]);g.addColorStop(.55,P[3]);g.addColorStop(1,P[1]);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   disk(420,150,85,P[5]);for(let i=0;i<10;i++){ctx.beginPath();ctx.arc(420,150,100+i*14,0,6.283);ctx.strokeStyle=P[(i+2)%8];ctx.lineWidth=2;ctx.stroke()}
+   for(let y=28;y<520;y+=46)for(let x=20;x<540;x+=46){ctx.save();ctx.translate(x,y);ctx.rotate(((x+y)%3)*.2);ctx.fillStyle=P[((x/46|0)+(y/46|0)*2)%8];ctx.globalAlpha=.35;ctx.fillRect(-18,-18,36,36);ctx.globalAlpha=1;ctx.strokeStyle="#fff9";ctx.lineWidth=2;ctx.strokeRect(-18,-18,36,36);ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.stroke();ctx.restore()}
+   for(let i=0;i<5;i++){let x=10+i*125,y=650+rand()*40;poly([[x-80,y],[x-25,y-130-rand()*70],[x+20,y-190-rand()*80],[x+85,y]],P[(i+2)%8],"#fff9");poly([[x-25,y-130],[x+20,y-190],[x+85,y]],P[5],"#fff9")}
+   for(let i=0;i<6;i++)arch(40+i*100,756,70,230,P[(i+3)%8]);
+  }
+  ctx.globalAlpha=1;
+  for(let i=0;i<35;i++){let x=rand()*W,y=rand()*H;star(x,y,1+rand()*3,P[i%8])}
+  frame("#ffffff99");
+  const shade=ctx.createRadialGradient(W/2,H/2,170,W/2,H/2,Math.max(W,H)*.8);shade.addColorStop(0,"transparent");shade.addColorStop(1,"#03020dcc");ctx.fillStyle=shade;ctx.fillRect(0,0,W,H);
+  return;
+ }
  const style=(seed-1)%10;
  if(style===0){
   for(let i=0;i<13;i++){let x=i*48-15,b=H*(.4+rand()*.18),ww=30+rand()*45,hh=120+rand()*270;poly([[x,b],[x+ww,b-hh],[x+ww,b+260],[x,b+300]],C[i%8],"#ffffff66");for(let y=b+15;y<b+230;y+=24)for(let xx=x+7;xx<x+ww-3;xx+=13){ctx.fillStyle=C[(i+3)%8];ctx.globalAlpha=.8;ctx.fillRect(xx,y,5,9)}}
