@@ -205,7 +205,9 @@ document.addEventListener('pointerdown',e=>{
 });
 document.addEventListener('pointermove',e=>{if(!holdState||e.pointerId!==holdState.pointerId)return;if(Math.hypot(e.clientX-holdState.startX,e.clientY-holdState.startY)>14)clearHold()},{passive:true});
 document.addEventListener('pointerup',e=>{
- if(!holdState||e.pointerId!==holdState.pointerId)return;const h=holdState;clearHold();if(!h.ready||!h.el.isConnected)return;
+ if(!holdState||e.pointerId!==holdState.pointerId)return;const h=holdState;clearHold();
+ if(!h.ready||!h.el.isConnected)return;
+ const end=cardFromTarget(e.target);if(!end||end.el!==h.el||e.target.closest('.card-controls'))return;
  if(h.el.classList.contains('kanto-card'))longSuppress={id:h.id,until:Date.now()+900};
  openCard(h.c);
 });
