@@ -60,7 +60,7 @@ function drawPsychedelic(canvas,seed,type){
  const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,`hsl(${hue} 72% 9%)`);bg.addColorStop(.5,`hsl(${(hue+125)%360} 78% 13%)`);bg.addColorStop(1,`hsl(${(hue+245)%360} 72% 8%)`);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
  for(let layer=0;layer<7;layer++){
   const cx=w*(.2+rand()*.6),cy=h*(.18+rand()*.64),max=100+rand()*260;
-  const g=ctx.createRadialGradient(cx,cy,2,cx,cy,max);g.addColorStop(0,colors[(layer+1)%7]);g.addColorStop(.45,colors[(layer+3)%7]+"99");g.addColorStop(1,"transparent");ctx.globalAlpha=.24;ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+  const g=ctx.createRadialGradient(cx,cy,2,cx,cy,max);g.addColorStop(0,colors[(layer+1)%7]);g.addColorStop(.45,colors[(layer+3)%7]);g.addColorStop(1,"transparent");ctx.globalAlpha=.24;ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
  }
  ctx.globalAlpha=1;ctx.save();ctx.translate(w/2,h/2);
  for(let ring=0;ring<34;ring++){
@@ -87,7 +87,7 @@ function drawPsychedelic(canvas,seed,type){
  for(let y=0;y<h;y+=18){for(let x=0;x<w;x+=18){const v=rand(),r=2+v*5;ctx.globalAlpha=.12+v*.24;ctx.strokeStyle=colors[Math.floor(rand()*7)];ctx.lineWidth=.7;ctx.beginPath();ctx.arc(x+rand()*9,y+rand()*9,r,0,Math.PI*2);ctx.stroke()}}
  const vignette=ctx.createRadialGradient(w/2,h/2,100,w/2,h/2,Math.max(w,h)*.72);vignette.addColorStop(.35,"transparent");vignette.addColorStop(1,"#05020dcc");ctx.globalAlpha=1;ctx.fillStyle=vignette;ctx.fillRect(0,0,w,h);
 }
-function drawScenes(root=grid){root.querySelectorAll("canvas.scene:not([data-drawn])").forEach(canvas=>{drawPsychedelic(canvas,Number(canvas.dataset.seed),canvas.dataset.type||"");canvas.dataset.drawn="1"})}
+function drawScenes(root=grid){root.querySelectorAll("canvas.scene:not([data-drawn])").forEach(canvas=>{try{drawPsychedelic(canvas,Number(canvas.dataset.seed),canvas.dataset.type||"");canvas.dataset.drawn="1"}catch(err){console.error("Background render failed for card",canvas.dataset.seed,err);canvas.style.background="radial-gradient(circle at 50% 35%,#d946ef,#4c1d95 45%,#080b16 100%)";canvas.dataset.drawn="error"}})}
 function cardMarkup(p){
  const file=String(p.id).padStart(3,"0");
  const art=localArt.has(p.id)?'./assets/'+file+'.svg':'https://raw.githubusercontent.com/jnovack/pokemon-svg/master/svg/'+p.id+'.svg';
