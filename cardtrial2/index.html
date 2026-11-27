@@ -147,7 +147,7 @@ function loadBatch(){
  const batch=pokemon.slice(rendered,rendered+BATCH);
  grid.insertAdjacentHTML("beforeend",batch.map(cardMarkup).join(""));drawScenes();
  rendered+=batch.length;loadStatus.textContent="Showing "+rendered+" of "+pokemon.length+" Pokémon";
- loadButton.textContent=rendered>=pokemon.length?"All Pokémon loaded":"Load 20 more";loadButton.disabled=rendered>=151;
+ loadButton.textContent=rendered>=pokemon.length?"All Pokémon loaded":"Load 20 more";loadButton.disabled=rendered>=pokemon.length;
 }
 loadButton.addEventListener("click",loadBatch);loadBatch();
 if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadBatch()},{rootMargin:"700px 0px"});observer.observe(document.getElementById("load-more"))}
