@@ -13,7 +13,7 @@ header{max-width:1400px;margin:auto;padding:30px 24px 18px}.topline{display:flex
 .demo{background:linear-gradient(150deg,#141d32,#0d1323);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0;box-shadow:0 12px 35px #0005}.demo h2{font-size:15px;margin:0 0 3px}.demo p{font-size:12px;color:var(--muted);margin:0 0 12px;min-height:34px}
 .stage{height:350px;display:grid;place-items:center;perspective:1000px;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}
 .card{width:min(100%,220px);aspect-ratio:3/4.2;position:relative;transform-style:flat;will-change:transform;border-radius:17px;overflow:hidden;background:#263b52;box-shadow:0 22px 42px #000a,0 0 0 1px #ffffff45;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:rotateX(var(--rx)) rotateY(var(--ry))}
-.scene{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:scale(1.06);filter:saturate(1.12) contrast(1.06);object-position:var(--focus,center);transition:filter .25s}
+.scene{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;object-fit:cover;transform:scale(1.02);filter:saturate(1.65) contrast(1.18);transition:filter .25s;background:#100923}
 .scene-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#07101b18 0%,#07101b08 34%,#07101b55 72%,#07101bc9 100%);pointer-events:none;}
 .card:before{content:"";position:absolute;z-index:2;left:12%;right:12%;top:17%;height:58%;border-radius:50%;background:radial-gradient(ellipse,var(--glow) 0%,transparent 70%);filter:blur(17px);opacity:.58;pointer-events:none}
 .pokemon{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:3!important;width:88%!important;height:82%!important;left:6%!important;top:4%!important;object-fit:contain!important;filter:drop-shadow(0 12px 9px #020711d9) drop-shadow(0 0 9px var(--glow)) drop-shadow(0 0 4px #ffffff55);transform:translate3d(calc(var(--dx)*.35),calc(var(--dy)*.35),0)!important;pointer-events:none}
@@ -29,7 +29,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 24px 35px;color:#7f8da8;font-siz
 <header><div class="topline"><div><h1>POKÉMON / 3D CARD LAB 02</h1><p class="sub">All 151 original Kanto Pokémon, each with its own type-matched photographic environment. Drag or swipe to tilt each card. More cards load as you scroll.</p></div><a class="back" href="../cardtrial/">← Mew Lab</a></div></header>
 <div class="controls"><button id="auto" class="active" type="button">Auto-wiggle: on</button><button id="reset" type="button">Reset angles</button><span class="hint">Tilt is limited to 30° · 20 cards load at a time</span></div>
 <main class="grid" id="grid"></main><div id="load-more" style="max-width:1400px;margin:-24px auto 42px;padding:0 24px;text-align:center;color:#9aa8c2"><button id="load-button" type="button" style="background:#1c2944;border:1px solid #394968;color:white;padding:11px 18px;border-radius:10px;font:inherit;cursor:pointer">Load 20 more</button><p id="load-status" class="hint">Showing 0 of 151 Pokémon</p></div>
-<footer>Pokémon character artwork: jnovack/pokemon-svg. Environment photos are selected through LoremFlickr by type and unique Pokémon ID. Photo service: <a href="https://loremflickr.com/" target="_blank" rel="noopener" style="color:#aebee7">LoremFlickr</a>. Previous photo credits: <a href="https://unsplash.com/photos/sunlight-filters-through-trees-onto-a-forest-path-_6l0XJKMS3A" target="_blank" rel="noopener" style="color:#aebee7">Kristaps Ungurs</a> · <a href="https://unsplash.com/photos/photo-of-lava-flowing-on-land-Aduh0KXCI1w" target="_blank" rel="noopener" style="color:#aebee7">Marc Szeglat</a> · <a href="https://unsplash.com/photos/underwater-coral-reef-teeming-with-life-MjEjRZrZX-o" target="_blank" rel="noopener" style="color:#aebee7">Nuraini Arsad</a> · <a href="https://unsplash.com/photos/a-lightning-storm-is-seen-over-a-city-at-night-cMBe2kYLsk0" target="_blank" rel="noopener" style="color:#aebee7">Frankie Lopez</a> · <a href="https://unsplash.com/photos/sunlight-through-autumn-forest-trees-ouPefPLmsns" target="_blank" rel="noopener" style="color:#aebee7">Pascal Bullan</a> · <a href="https://unsplash.com/photos/castle-ruins-on-a-hill-above-the-fog-at-sunrise-CEX9Y1gZQjg" target="_blank" rel="noopener" style="color:#aebee7">Andreas Slotosch</a> · <a href="https://unsplash.com/photos/a-mountain-covered-in-clouds-and-snow-espfJXO6-7A" target="_blank" rel="noopener" style="color:#aebee7">Greg Rosenke</a> · <a href="https://unsplash.com/photos/blue-icebergs-in-glacial-water-UBPKfhgocvA" target="_blank" rel="noopener" style="color:#aebee7">Bernd Dittrich</a> · <a href="https://unsplash.com/photos/a-sunlit-forest-path-with-purple-and-gold-foliage-HEcXapHYkpk" target="_blank" rel="noopener" style="color:#aebee7">Wolfgang Hasselmann</a> · <a href="https://unsplash.com/photos/cave-interior-with-textured-rock-formations-and-mineral-deposits-dFJqzA4NiM0" target="_blank" rel="noopener" style="color:#aebee7">iuliu illes</a></footer>
+<footer>Pokémon character artwork: jnovack/pokemon-svg. Each card has its own locally generated, high-detail psychedelic environment, seeded by Pokédex number. <a href="https://unsplash.com/photos/sunlight-filters-through-trees-onto-a-forest-path-_6l0XJKMS3A" target="_blank" rel="noopener" style="color:#aebee7">Kristaps Ungurs</a> · <a href="https://unsplash.com/photos/photo-of-lava-flowing-on-land-Aduh0KXCI1w" target="_blank" rel="noopener" style="color:#aebee7">Marc Szeglat</a> · <a href="https://unsplash.com/photos/underwater-coral-reef-teeming-with-life-MjEjRZrZX-o" target="_blank" rel="noopener" style="color:#aebee7">Nuraini Arsad</a> · <a href="https://unsplash.com/photos/a-lightning-storm-is-seen-over-a-city-at-night-cMBe2kYLsk0" target="_blank" rel="noopener" style="color:#aebee7">Frankie Lopez</a> · <a href="https://unsplash.com/photos/sunlight-through-autumn-forest-trees-ouPefPLmsns" target="_blank" rel="noopener" style="color:#aebee7">Pascal Bullan</a> · <a href="https://unsplash.com/photos/castle-ruins-on-a-hill-above-the-fog-at-sunrise-CEX9Y1gZQjg" target="_blank" rel="noopener" style="color:#aebee7">Andreas Slotosch</a> · <a href="https://unsplash.com/photos/a-mountain-covered-in-clouds-and-snow-espfJXO6-7A" target="_blank" rel="noopener" style="color:#aebee7">Greg Rosenke</a> · <a href="https://unsplash.com/photos/blue-icebergs-in-glacial-water-UBPKfhgocvA" target="_blank" rel="noopener" style="color:#aebee7">Bernd Dittrich</a> · <a href="https://unsplash.com/photos/a-sunlit-forest-path-with-purple-and-gold-foliage-HEcXapHYkpk" target="_blank" rel="noopener" style="color:#aebee7">Wolfgang Hasselmann</a> · <a href="https://unsplash.com/photos/cave-interior-with-textured-rock-formations-and-mineral-deposits-dFJqzA4NiM0" target="_blank" rel="noopener" style="color:#aebee7">iuliu illes</a></footer>
 <script>
 
 const names=["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Caterpie","Metapod","Butterfree","Weedle","Kakuna","Beedrill","Pidgey","Pidgeotto","Pidgeot","Rattata","Raticate","Spearow","Fearow","Ekans","Arbok","Pikachu","Raichu","Sandshrew","Sandslash","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Clefairy","Clefable","Vulpix","Ninetales","Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish","Gloom","Vileplume","Paras","Parasect","Venonat","Venomoth","Diglett","Dugtrio","Meowth","Persian","Psyduck","Golduck","Mankey","Primeape","Growlithe","Arcanine","Poliwag","Poliwhirl","Poliwrath","Abra","Kadabra","Alakazam","Machop","Machoke","Machamp","Bellsprout","Weepinbell","Victreebel","Tentacool","Tentacruel","Geodude","Graveler","Golem","Ponyta","Rapidash","Slowpoke","Slowbro","Magnemite","Magneton","Farfetch’d","Doduo","Dodrio","Seel","Dewgong","Grimer","Muk","Shellder","Cloyster","Gastly","Haunter","Gengar","Onix","Drowzee","Hypno","Krabby","Kingler","Voltorb","Electrode","Exeggcute","Exeggutor","Cubone","Marowak","Hitmonlee","Hitmonchan","Lickitung","Koffing","Weezing","Rhyhorn","Rhydon","Chansey","Tangela","Kangaskhan","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Mr. Mime","Scyther","Jynx","Electabuzz","Magmar","Pinsir","Tauros","Magikarp","Gyarados","Lapras","Ditto","Eevee","Vaporeon","Jolteon","Flareon","Porygon","Omanyte","Omastar","Kabuto","Kabutops","Aerodactyl","Snorlax","Articuno","Zapdos","Moltres","Dratini","Dragonair","Dragonite","Mewtwo","Mew"];
@@ -52,14 +52,48 @@ const backgrounds=[
 ];
 let rendered=0,auto=true;
 const BATCH=20,grid=document.getElementById("grid"),loadButton=document.getElementById("load-button"),loadStatus=document.getElementById("load-status");
+function seededRandom(seed){let x=seed>>>0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^(x>>>15),1|x);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296}}
+function drawPsychedelic(canvas,seed,type){
+ const w=540,h=756,ctx=canvas.getContext("2d"),rand=seededRandom(seed*7919+type.length*101),hue=(seed*37+type.length*19)%360;
+ canvas.width=w;canvas.height=h;
+ const colors=[0,42,95,155,205,255,300].map((n,i)=>`hsl(${(hue+n)%360} ${78+(i%3)*7}% ${i%2?58:38}%)`);
+ const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,`hsl(${hue} 72% 9%)`);bg.addColorStop(.5,`hsl(${(hue+125)%360} 78% 13%)`);bg.addColorStop(1,`hsl(${(hue+245)%360} 72% 8%)`);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+ for(let layer=0;layer<7;layer++){
+  const cx=w*(.2+rand()*.6),cy=h*(.18+rand()*.64),max=100+rand()*260;
+  const g=ctx.createRadialGradient(cx,cy,2,cx,cy,max);g.addColorStop(0,colors[(layer+1)%7]);g.addColorStop(.45,colors[(layer+3)%7]+"99");g.addColorStop(1,"transparent");ctx.globalAlpha=.24;ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ }
+ ctx.globalAlpha=1;ctx.save();ctx.translate(w/2,h/2);
+ for(let ring=0;ring<34;ring++){
+  const radius=18+ring*11,phase=rand()*Math.PI*2,segments=180;
+  ctx.beginPath();
+  for(let j=0;j<=segments;j++){const a=j/segments*Math.PI*2,r=radius+Math.sin(a*(5+(seed%7))+phase)*((ring%4)+3)+Math.cos(a*13+phase)*5,x=Math.cos(a)*r,y=Math.sin(a)*r;if(j===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+  ctx.closePath();ctx.strokeStyle=colors[ring%7];ctx.globalAlpha=.23+(ring%5)*.055;ctx.lineWidth=1+(ring%4)*.65;ctx.stroke();
+ }
+ for(let arm=0;arm<18;arm++){
+  const phase=arm*Math.PI/9+rand()*.2,twist=(rand()-.5)*2.2,reach=240+rand()*160;
+  ctx.beginPath();
+  for(let j=0;j<=260;j++){const t=j/260,r=8+reach*t,a=phase+twist*t+Math.sin(t*18+seed)*.16,x=Math.cos(a)*r,y=Math.sin(a)*r;if(j===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+  ctx.strokeStyle=colors[arm%7];ctx.globalAlpha=.65;ctx.lineWidth=1.2+rand()*2.8;ctx.shadowColor=colors[(arm+2)%7];ctx.shadowBlur=9;ctx.stroke();ctx.shadowBlur=0;
+ }
+ for(let i=0;i<900;i++){
+  const a=rand()*Math.PI*2,r=20+rand()*390,x=Math.cos(a)*r,y=Math.sin(a)*r,s=.5+rand()*2.6;
+  ctx.globalAlpha=.25+rand()*.65;ctx.fillStyle=colors[i%7];ctx.beginPath();ctx.arc(x,y,s,0,Math.PI*2);ctx.fill();
+ }
+ for(let petal=0;petal<13;petal++){
+  ctx.save();ctx.rotate(petal*Math.PI*2/13+rand()*.1);ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(35,-65,180,-95,245,0);ctx.bezierCurveTo(180,95,35,65,0,0);ctx.fillStyle=colors[petal%7];ctx.globalAlpha=.09;ctx.fill();ctx.strokeStyle=colors[(petal+3)%7];ctx.globalAlpha=.7;ctx.lineWidth=1.4;ctx.stroke();ctx.restore();
+ }
+ ctx.restore();
+ // Dense ornamental geometry and luminous filigree make each scene distinct.
+ for(let y=0;y<h;y+=18){for(let x=0;x<w;x+=18){const v=rand(),r=2+v*5;ctx.globalAlpha=.12+v*.24;ctx.strokeStyle=colors[Math.floor(rand()*7)];ctx.lineWidth=.7;ctx.beginPath();ctx.arc(x+rand()*9,y+rand()*9,r,0,Math.PI*2);ctx.stroke()}}
+ const vignette=ctx.createRadialGradient(w/2,h/2,100,w/2,h/2,Math.max(w,h)*.72);vignette.addColorStop(.35,"transparent");vignette.addColorStop(1,"#05020dcc");ctx.globalAlpha=1;ctx.fillStyle=vignette;ctx.fillRect(0,0,w,h);
+}
+function drawScenes(root=grid){root.querySelectorAll("canvas.scene:not([data-drawn])").forEach(canvas=>{drawPsychedelic(canvas,Number(canvas.dataset.seed),canvas.dataset.type||"");canvas.dataset.drawn="1"})}
 function cardMarkup(p){
- const file=String(p.id).padStart(3,"0"),primary=p.type.split(" / ")[0],background=backgrounds[sceneByType[primary]];
- const photoTags={Grass:"forest,nature",Bug:"forest,flowers",Fire:"volcano,lava",Fighting:"volcano,mountains",Water:"coral,underwater,ocean",Electric:"lightning,storm,sky",Normal:"meadow,woodland,nature",Fairy:"flower,meadow,magical,forest",Psychic:"ancient,temple,ruins",Ghost:"dark,forest,fog",Poison:"dark,forest,mushrooms",Rock:"cave,rock,geology",Ground:"desert,canyon,rock",Flying:"mountains,clouds,sky",Dragon:"mountains,storm,landscape",Ice:"glacier,ice,snow"};
- const photoUrl="https://loremflickr.com/900/1200/"+(photoTags[primary]||"nature,landscape")+"?lock="+p.id;
+ const file=String(p.id).padStart(3,"0");
  const art=localArt.has(p.id)?'./assets/'+file+'.svg':'https://raw.githubusercontent.com/jnovack/pokemon-svg/master/svg/'+p.id+'.svg';
  return `<article class="demo"><h2>${file} · ${p.name}</h2><p>${p.scene} · ${p.type} type</p>
  <div class="stage"><div class="card" style="--glow:${palettes[(p.id-1)%palettes.length][0]}">
- <img class="scene" src="${photoUrl}" style="--focus:${background.focus}" alt="" aria-hidden="true" loading="lazy" decoding="async"><div class="scene-shade"></div>
+ <canvas class="scene" data-seed="${p.id}" data-type="${p.type}" aria-hidden="true"></canvas><div class="scene-shade"></div>
  <img class="pokemon" src="${art}" alt="${p.name}" draggable="false" loading="lazy" decoding="async">
  <div class="caption"><b>${p.name}</b><small>KANTO · NO. ${file}</small></div><div class="shine"></div><div class="gloss"></div>
  </div></div></article>`;
@@ -67,7 +101,7 @@ function cardMarkup(p){
 function loadBatch(){
  if(rendered>=151)return;
  const batch=pokemon.slice(rendered,rendered+BATCH);
- grid.insertAdjacentHTML("beforeend",batch.map(cardMarkup).join(""));
+ grid.insertAdjacentHTML("beforeend",batch.map(cardMarkup).join(""));drawScenes();
  rendered+=batch.length;loadStatus.textContent="Showing "+rendered+" of 151 Pokémon";
  loadButton.textContent=rendered>=151?"All 151 Pokémon loaded":"Load 20 more";loadButton.disabled=rendered>=151;
 }
