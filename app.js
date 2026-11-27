@@ -178,6 +178,8 @@ document.addEventListener("pointerdown",e=>{const card=e.target.closest(".card[d
 document.addEventListener("pointerup",e=>{if(!quickAddTap||quickAddTap.pointerId!==e.pointerId)return;const first=quickAddTap;quickAddTap=null;const card=e.target.closest(".card[data-card-id],.binder-view-slot[data-card-id]");if(!card||card.dataset.cardId!==first.id||e.target.closest("button,input,select,a"))return;if(Date.now()-first.time>450||Math.hypot(e.clientX-first.x,e.clientY-first.y)>12)return;if(first.pointerType==="mouse"){quickAddTapLast=null;change(first.id,1);return}const now=Date.now();if(quickAddTapLast&&quickAddTapLast.id===first.id&&now-quickAddTapLast.time<=350){quickAddTapLast=null;change(first.id,1)}else quickAddTapLast={id:first.id,time:now};});
 document.addEventListener("pointerdown",e=>{
  const card=e.target.closest(".kanto-card");if(!card||activeView!=="kanto151"||e.button!==0)return;
+ const heldVersion=cards.find(x=>String(x.id)===String(card.dataset.id));
+ if(String(heldVersion?.rarity||"").trim().toUpperCase()==="IM"||/immersive/i.test(String(heldVersion?.rarity_name||""))){clearTimeout(kantoHoldTimer);kantoGesture=null;kantoDrag=null;return}
  clearTimeout(kantoHoldTimer);kantoDrag=null;
  kantoGesture={card,strip:card.parentElement,pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,startScroll:card.parentElement.scrollLeft,scrolling:false,dragging:false};
  kantoHoldTimer=setTimeout(()=>{
