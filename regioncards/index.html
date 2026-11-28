@@ -11,13 +11,13 @@ header{max-width:1400px;margin:auto;padding:30px 24px 22px}.top{display:flex;jus
 main{max-width:1400px;margin:auto;padding:0 24px 50px}.region{margin:20px 0 38px}.region-head{display:flex;align-items:baseline;gap:12px;margin-bottom:13px}.region-head h2{margin:0;font-size:22px}.region-head span{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
 .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
 .card{position:relative;aspect-ratio:3/4.2;max-height:520px;min-width:0;overflow:hidden;border-radius:18px;background:#15213a;box-shadow:0 18px 42px #0009,0 0 0 1px #ffffff45;isolation:isolate;--a:#32d7c4;--b:#ed58d6;--c:#ffe38b}
-.fractal-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-3;display:block;image-rendering:auto}.environment{position:absolute;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,var(--a) 0%,transparent 44%),radial-gradient(ellipse at 15% 90%,var(--b) 0%,transparent 52%),linear-gradient(155deg,#11142e 0%,#172d50 48%,#080d20 100%)}
+.paint-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-3;display:block}.environment{position:absolute;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,var(--a) 0%,transparent 44%),radial-gradient(ellipse at 15% 90%,var(--b) 0%,transparent 52%),linear-gradient(155deg,#11142e 0%,#172d50 48%,#080d20 100%)}
 .environment:before,.environment:after{content:"";position:absolute;inset:-25%;pointer-events:none}
 .environment:before{background:repeating-conic-gradient(from 12deg at 50% 48%,#ffffff22 0deg 1deg,transparent 1deg 12deg);opacity:.28;mix-blend-mode:screen}
 .environment:after{background:radial-gradient(ellipse at 50% 50%,transparent 25%,#020512b8 100%);box-shadow:inset 0 0 60px #000b}
 .geometry{position:absolute;inset:0;width:100%;height:100%;opacity:.8;mix-blend-mode:screen}
 .echo{position:absolute;z-index:0;width:112%;height:100%;left:-6%;top:-2%;object-fit:contain;pointer-events:none;opacity:.52;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(12) hue-rotate(var(--echo-hue,120deg)) contrast(1.5) brightness(1.12) drop-shadow(0 0 12px var(--a)) drop-shadow(0 0 26px var(--b))}
-.echo.echo2{opacity:.27;transform:translate(7%,4%) scale(1.16);filter:grayscale(1) sepia(1) saturate(14) hue-rotate(calc(var(--echo-hue,120deg) + 125deg)) contrast(1.6) brightness(1.15);mix-blend-mode:color-dodge}
+.card.paint .echo{opacity:.12;mix-blend-mode:soft-light;filter:grayscale(1) brightness(1.8)}.card.paint .echo.echo2{opacity:.055;mix-blend-mode:screen}.card.paint .mon{filter:drop-shadow(0 15px 12px #000e) drop-shadow(0 0 9px #fff9)}.echo.echo2{opacity:.27;transform:translate(7%,4%) scale(1.16);filter:grayscale(1) sepia(1) saturate(14) hue-rotate(calc(var(--echo-hue,120deg) + 125deg)) contrast(1.6) brightness(1.15);mix-blend-mode:color-dodge}
 .mon{position:absolute;z-index:2;width:88%;height:78%;left:6%;top:4%;object-fit:contain;filter:drop-shadow(0 16px 10px #000c) drop-shadow(0 0 12px var(--a)) drop-shadow(0 0 4px #fff9)}
 .card:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border:1px solid #ffffff65;border-radius:inherit;box-shadow:inset 0 0 28px #e8faff35}
 .label{position:absolute;z-index:5;left:9px;right:9px;bottom:9px;padding:8px 9px;background:#080d20c9;border:1px solid #ffffff75;border-radius:10px;backdrop-filter:blur(8px);box-shadow:0 7px 18px #0009}
@@ -38,7 +38,7 @@ main{max-width:1400px;margin:auto;padding:0 24px 50px}.region{margin:20px 0 38px
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>POKÉMON / REGION STYLE LAB</h1><p class="sub">Four individually art-directed worlds for every region. Every card has its own environment, visual motif, lighting and color story, with the Pokémon's own SVG reused for the foreground and neon echo layers.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
+<header><div class="top"><div><h1>POKÉMON / REGION STYLE LAB</h1><p class="sub">A Pokémon art experiment in explosive paint, splashes, drips and branching color. Kanto and Johto keep their original scenes; the remaining regions become generative splatter paintings.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
 <main id="regions"></main>
 <script>
 const regions=[
@@ -72,69 +72,43 @@ function makeScene(kind,c,seed){
  return '<svg class="scene" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice" xmlns="'+ns+'">'+P.join("")+'</svg>';
 }
 
-function fractalCanvas(canvas,kind,colors,seed){
- const ctx=canvas.getContext("2d",{alpha:false}),w=180,h=252;
- canvas.width=w;canvas.height=h;
- const image=ctx.createImageData(w,h),data=image.data;
- const [ca,cb,cc]=colors.map(hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]);
- const mix=(a,b,t)=>a+(b-a)*t;
- const palette=t=>{t=(t%1+1)%1;const q=t*3,i=Math.floor(q),u=q-i,A=ca,B=cb,C=cc,D=ca;const p=i===0?[A,B]:i===1?[B,C]:[C,D];return [mix(p[0][0],p[1][0],u),mix(p[0][1],p[1][1],u),mix(p[0][2],p[1][2],u)]};
- const max=kind==="newton"?36:54,zoom=kind==="julia"?1.45:kind==="burning"?1.7:1.25;
- const cx=kind==="julia"?-.12:kind==="newton"?0:kind==="fern"?0: -.48+(seed%4)*.035;
- const cy=kind==="julia"?0:kind==="newton"?0:0;
- for(let py=0;py<h;py++)for(let px=0;px<w;px++){
-  let x=(px-w/2)/(w*.38*zoom)+cx,y=(py-h/2)/(w*.38*zoom)+cy;
-  let n=0,escaped=false,trap=10;
-  if(kind==="newton"){
-   let zr=x,zi=y;
-   for(;n<max;n++){
-    const r2=zr*zr+zi*zi;
-    if(r2<1e-16)break;
-    // Newton iteration for z^3 - 1 = 0, using complex arithmetic.
-    const z3r=zr*(zr*zr-3*zi*zi),z3i=zi*(3*zr*zr-zi*zi);
-    const fr=z3r-1,fi=z3i,dr=3*(zr*zr-zi*zi),di=6*zr*zi,den=dr*dr+di*di;
-    const qr=(fr*dr+fi*di)/den,qi=(fi*dr-fr*di)/den;
-    zr-=qr;zi-=qi;trap=Math.min(trap,Math.abs(Math.hypot(zr,zi)-1));
-    if(Math.hypot(qr,qi)<1e-7)break;
-   }
-   const roots=[[1,0],[-.5,.8660254],[-.5,-.8660254]];
-   let root=0,best=99;roots.forEach((r,i)=>{const d=Math.hypot(zr-r[0],zi-r[1]);if(d<best){best=d;root=i}});
-   const t=(root/3+n/max*.12+Math.min(1,trap)*.12)%1;
-   const col=palette(t);const k=1-Math.min(1,best*3);const idx=(py*w+px)*4;
-   data[idx]=col[0]*k;data[idx+1]=col[1]*k;data[idx+2]=col[2]*k;data[idx+3]=255;continue;
-  }
-  if(kind==="fern"){
-   // Barnsley fern: deterministic chaos game, sampled per pixel via an iterated inverse-map density field.
-   let zx=x*1.15,zy=y*1.15,hit=0;
-   for(let j=0;j<max*3;j++){let nx,ny,r=((j*1103515245+seed*12345)>>>0)/4294967296;if(r<.01){nx=0;ny=.16*zy}else if(r<.86){nx=.85*zx+.04*zy;ny=-.04*zx+.85*zy+1.6}else if(r<.93){nx=.2*zx-.26*zy;ny=.23*zx+.22*zy+1.6}else{nx=-.15*zx+.28*zy;ny=.26*zx+.24*zy+.44}zx=nx;zy=ny;if(Math.abs(zx-x)<.018&&Math.abs(zy-y)<.018)hit++}
-   n=hit;escaped=hit>0;trap=hit;
-  }else{
-   let zx=kind==="julia"?x:0,zy=kind==="julia"?y:0,cr=kind==="julia"?-.78+seed*.013:x,ci=kind==="julia"?.19+seed*.009:y;
-   for(;n<max;n++){
-    let ax=zx,ay=zy;
-    if(kind==="burning"){ax=Math.abs(ax);ay=Math.abs(ay)}
-    if(kind==="tricorn")ay=-ay;
-    if(kind==="phoenix"){const oldx=zx,oldy=zy;zx=zx*zx-zy*zy+cr+.566*ax;zy=2*ax*zy+ci+.0*ay;ax=oldx;ay=oldy}
-    else if(kind==="multibrot"){const r=Math.hypot(ax,ay),ang=Math.atan2(ay,ax),pow=2.5;zx=Math.pow(r,pow)*Math.cos(pow*ang)+cr;zy=Math.pow(r,pow)*Math.sin(pow*ang)+ci}
-    else{zx=ax*ax-ay*ay+cr;zy=2*ax*ay+ci}
-    const mag=zx*zx+zy*zy;trap=Math.min(trap,Math.abs(Math.hypot(zx,zy)-.72));
-    if(mag>256){escaped=true;break}
-   }
-  }
-  let t=escaped?((n+1-Math.log2(Math.max(1,Math.log2(Math.hypot(x,y))))/max*.8)/max):.015+Math.min(1,trap)*.06;
-  if(kind==="fern")t=escaped?Math.min(.95,.12+n*.055):.01;
-  const col=palette(t+seed*.037),glow=escaped?1:.23;
-  const idx=(py*w+px)*4;data[idx]=col[0]*glow;data[idx+1]=col[1]*glow;data[idx+2]=col[2]*glow;data[idx+3]=255;
+function paintSplatter(canvas,colors,seed){
+ const ctx=canvas.getContext("2d"),W=240,H=336;canvas.width=W;canvas.height=H;
+ let state=(seed*2654435761)>>>0;const rand=()=>{state=(state*1664525+1013904223)>>>0;return state/4294967296};
+ const pick=a=>a[Math.floor(rand()*a.length)],rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+ const palette=colors.map(rgb),color=(i,alpha)=>{const c=palette[(i+palette.length)%palette.length];return "rgba("+c[0]+","+c[1]+","+c[2]+","+alpha+")"};
+ ctx.fillStyle="#10121d";ctx.fillRect(0,0,W,H);
+ const wash=ctx.createLinearGradient(0,0,W,H);wash.addColorStop(0,"#242536");wash.addColorStop(.48,"#111522");wash.addColorStop(1,"#080c18");ctx.fillStyle=wash;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<1900;i++){const v=rand()>.5?255:0;ctx.fillStyle="rgba("+v+","+v+","+v+","+(rand()*.045)+")";ctx.fillRect(rand()*W,rand()*H,1+rand()*2,1+rand()*2)}
+ function blob(x,y,rx,ry,col,rotation,alpha,points){
+  ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.beginPath();
+  for(let i=0;i<=points;i++){const a=i/points*Math.PI*2,r=.72+rand()*.55,px=Math.cos(a)*rx*r,py=Math.sin(a)*ry*r;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)}
+  ctx.closePath();ctx.globalAlpha=alpha;ctx.fillStyle=col;ctx.fill();ctx.restore();
  }
- ctx.putImageData(image,0,0);
+ const centers=[[rand()*55+10,rand()*100+45],[W-(rand()*55+10),rand()*110+100],[rand()*100+65,H-(rand()*80+35)]];
+ centers.forEach(([x,y],i)=>{
+  for(let k=0;k<4;k++)blob(x+(rand()-.5)*30,y+(rand()-.5)*30,24+rand()*45,25+rand()*52,color(i+k,.58+rand()*.3),rand()*Math.PI,.72,22);
+  for(let j=0;j<24;j++){const a=rand()*Math.PI*2,len=18+rand()*68,thick=1+rand()*8;ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();ctx.moveTo(8,0);ctx.quadraticCurveTo(len*.55,-thick*2,len,(rand()-.5)*thick*2);ctx.quadraticCurveTo(len*.55,thick*2,8,0);ctx.fillStyle=color(i+j,.5+rand()*.4);ctx.fill();ctx.restore()}
+ });
+ for(let i=0;i<13;i++){const x=rand()*W,y=rand()*H,ex=x+(rand()-.5)*230,ey=y+(rand()-.5)*270;ctx.save();ctx.globalAlpha=.35+rand()*.42;ctx.strokeStyle=color(i,.8);ctx.lineWidth=5+rand()*25;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x+(rand()-.5)*100,y+(rand()-.5)*80,ex+(rand()-.5)*90,ey+(rand()-.5)*80,ex,ey);ctx.stroke();for(let j=0;j<5;j++){ctx.globalAlpha=.12+rand()*.18;ctx.lineWidth=.5+rand()*2;ctx.beginPath();ctx.moveTo(x+(rand()-.5)*14,y+(rand()-.5)*14);ctx.lineTo(ex+(rand()-.5)*18,ey+(rand()-.5)*18);ctx.stroke()}ctx.restore()}
+ function branch(x,y,angle,length,width,depth,col){
+  if(depth<=0||length<3)return;const bend=(rand()-.5)*.7,ex=x+Math.cos(angle+bend)*length,ey=y+Math.sin(angle+bend)*length;
+  ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo((x+ex)/2+rand()*8-4,(y+ey)/2+rand()*8-4,ex,ey);ctx.strokeStyle=col;ctx.lineWidth=width;ctx.lineCap="round";ctx.globalAlpha=.22+depth*.075;ctx.stroke();
+  if(rand()<.82)branch(ex,ey,angle-.38-rand()*.5,length*(.58+rand()*.13),width*.68,depth-1,col);
+  if(rand()<.78)branch(ex,ey,angle+.38+rand()*.5,length*(.55+rand()*.16),width*.65,depth-1,col);
+  if(depth>3&&rand()<.32)branch(ex,ey,angle+(rand()-.5)*1.8,length*.48,width*.45,depth-2,col);
+ }
+ for(let i=0;i<9;i++){const edge=rand()<.5?0:W,x=edge?W:0,y=rand()*H;branch(x,y,(edge?Math.PI:0)+(rand()-.5)*1.2,35+rand()*55,2+rand()*5,5,pick(colors))}
+ for(let i=0;i<520;i++){const o=pick(centers),a=rand()*Math.PI*2,d=Math.pow(rand(),.62)*(45+rand()*125),x=o[0]+Math.cos(a)*d,y=o[1]+Math.sin(a)*d,r=rand()<.08?2+rand()*4:.35+rand()*1.8;ctx.globalAlpha=.38+rand()*.55;ctx.fillStyle=pick(colors);ctx.beginPath();ctx.ellipse(x,y,r,r*(.55+rand()),rand()*Math.PI,0,Math.PI*2);ctx.fill();if(rand()<.16){ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+rand()*4-2,y+rand()*8,x+(rand()-.5)*4,y+5+rand()*13);ctx.lineWidth=.5+rand()*1.7;ctx.strokeStyle=ctx.fillStyle;ctx.stroke()}}
+ for(let i=0;i<23;i++){const x=rand()*W,y=rand()*95,len=7+Math.pow(rand(),2)*105;ctx.globalAlpha=.45+rand()*.45;ctx.fillStyle=pick(colors);ctx.beginPath();ctx.moveTo(x-1-rand()*2,y);ctx.quadraticCurveTo(x-3,y+len*.7,x,y+len);ctx.quadraticCurveTo(x+4,y+len*.7,x+1+rand()*2,y);ctx.fill();ctx.beginPath();ctx.arc(x,y+len,1+rand()*2,0,Math.PI*2);ctx.fill()}
+ for(let i=0;i<170;i++){const x=rand()*W,y=rand()*H,r=.3+rand()*1.25;ctx.globalAlpha=.2+rand()*.5;ctx.fillStyle=rand()>.5?"#fff4e6":"#05060b";ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
+ ctx.globalAlpha=1;const v=ctx.createRadialGradient(W*.5,H*.43,65,W*.5,H*.5,245);v.addColorStop(0,"rgba(4,6,15,0)");v.addColorStop(1,"rgba(4,6,15,.56)");ctx.fillStyle=v;ctx.fillRect(0,0,W,H);
 }
-const fractalObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
- if(entry.isIntersecting){const c=entry.target;fractalCanvas(c,c.dataset.kind,c.dataset.colors.split(","),+c.dataset.seed);fractalObserver.unobserve(c)}
-}),{rootMargin:"240px"});
+const paintObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){const c=entry.target;paintSplatter(c,c.dataset.colors.split(","),+c.dataset.seed);paintObserver.unobserve(c)}}),{rootMargin:"260px"});
 
 const root=document.getElementById("regions");
 regions.forEach((r,ri)=>{const section=document.createElement("section");section.className="region";section.innerHTML='<div class="region-head"><h2>'+r[0]+'</h2><span>Generation '+r[1]+' · 4 original worlds</span></div><div class="cards"></div>';const cards=section.querySelector(".cards");
-r[3].forEach((theme,si)=>{const [title,kind,colors]=theme,[id,name]=r[2][si%2];const card=document.createElement("article");card.className="card";card.style.setProperty("--glow",colors[0]);card.style.setProperty("--glow2",colors[1]);card.style.setProperty("--echo-hue",(ri*43+si*77)%360+"deg");if(ri<2){card.innerHTML=makeScene(kind,colors,ri*4+si+1)}else{const fkinds=[["mandelbrot","julia","burning","phoenix"],["newton","tricorn","multibrot","mandelbrot"],["julia","phoenix","burning","tricorn"],["multibrot","newton","julia","mandelbrot"],["fern","julia","phoenix","burning"],["tricorn","multibrot","newton","julia"]];const fc=document.createElement("canvas");fc.className="fractal-canvas";fc.dataset.kind=fkinds[ri-2][si];fc.dataset.colors=colors.join(",");fc.dataset.seed=String(ri*4+si+1);fc.setAttribute("aria-hidden","true");card.append(fc);fractalObserver.observe(fc)}
+r[3].forEach((theme,si)=>{const [title,kind,colors]=theme,[id,name]=r[2][si%2];const card=document.createElement("article");card.className="card";card.style.setProperty("--glow",colors[0]);card.style.setProperty("--glow2",colors[1]);card.style.setProperty("--echo-hue",(ri*43+si*77)%360+"deg");if(ri<2){card.innerHTML=makeScene(kind,colors,ri*4+si+1)}else{card.classList.add("paint");const pc=document.createElement("canvas");pc.className="paint-canvas";pc.dataset.colors=colors.join(",");pc.dataset.seed=String(ri*4+si+1);pc.setAttribute("aria-hidden","true");card.append(pc);paintObserver.observe(pc)}
 const art=document.createElement("img");art.className="echo";art.alt="";art.draggable=false;art.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+id+".svg";const echo2=art.cloneNode();echo2.className="echo echo2";
 const mon=document.createElement("img");mon.className="mon";mon.alt=name;mon.draggable=false;mon.loading="lazy";mon.src=art.src;mon.onerror=()=>{mon.onerror=null;const png="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";mon.src=png;art.src=png;echo2.src=png};
 const tag=document.createElement("div");tag.className="style-tag";tag.textContent=title;const label=document.createElement("div");label.className="label";label.innerHTML="<b>"+name+"</b><small>"+r[0]+" · "+kind.replace(/([A-Z])/g," $1")+"</small>";card.append(art,echo2,mon,tag,label);cards.append(card)});root.append(section)});
