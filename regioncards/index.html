@@ -38,57 +38,44 @@ main{max-width:1400px;margin:auto;padding:0 24px 50px}.region{margin:20px 0 38px
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>POKÉMON / REGION STYLE LAB</h1><p class="sub">Four increasingly outlandish background directions for every region. Each design reuses the Pokémon's own SVG as the foreground character and as two neon echo layers, like the original Card Lab style. No poster backgrounds.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
+<header><div class="top"><div><h1>POKÉMON / REGION STYLE LAB</h1><p class="sub">Four individually art-directed worlds for every region. Every card has its own environment, visual motif, lighting and color story, with the Pokémon's own SVG reused for the foreground and neon echo layers.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
 <main id="regions"></main>
 <script>
 const regions=[
-{name:"Kanto",gen:1,colors:["#38c88c","#ed7c3c","#f4dc8c"],pokemon:[[25,"Pikachu"],[6,"Charizard"]]},
-{name:"Johto",gen:2,colors:["#8f7be8","#f0b95d","#a8e8ef"],pokemon:[[249,"Lugia"],[250,"Ho-Oh"]]},
-{name:"Hoenn",gen:3,colors:["#24c8d8","#2775c8","#f4a5c5"],pokemon:[[384,"Rayquaza"],[282,"Gardevoir"]]},
-{name:"Sinnoh",gen:4,colors:["#8bc8ef","#b4a0ed","#f7e4a0"],pokemon:[[483,"Dialga"],[484,"Palkia"]]},
-{name:"Unova",gen:5,colors:["#f08c58","#596be8","#e7e7f5"],pokemon:[[643,"Reshiram"],[644,"Zekrom"]]},
-{name:"Kalos",gen:6,colors:["#ec79c4","#69d8cf","#f8d68c"],pokemon:[[716,"Xerneas"],[717,"Yveltal"]]},
-{name:"Alola",gen:7,colors:["#31c7b0","#f2a85b","#d9a8ef"],pokemon:[[791,"Solgaleo"],[792,"Lunala"]]},
-{name:"Galar",gen:8,colors:["#e65b78","#5b8ee8","#d9c7ff"],pokemon:[[888,"Zacian"],[889,"Zamazenta"]]}
-];
-const styles=[
-["01 · Dream terrain","Surreal atmospheric landscape"],
-["02 · Fracture world","Angular geometry and layered dimensions"],
-["03 · Hypercosmos","Concentric portals and impossible space"],
-["04 · Reality overload","Full-spectrum dimensional distortion"]
+["Kanto",1,[[25,"Pikachu"],[6,"Charizard"]],[["Vermilion Afterdark","city",["#ffb13b","#ff4f79","#5b6dff"]],["Viridian Lost World","jungle",["#b8e76b","#24a879","#e9b85c"]],["Lavender Dream Logic","dream",["#f8a6e8","#8a83ff","#ffdf92"]],["Cerulean Glitch Lab","glitch",["#4de9ed","#3274e9","#f45dbb"]]]],
+["Johto",2,[[249,"Lugia"],[250,"Ho-Oh"]],[["Ecruteak Spirit Gate","shrine",["#f4c66e","#a76bcb","#8ce8dc"]],["Ilex Clockwork Grove","clock",["#b6d77c","#d69a50","#70c6a1"]],["Tin Tower Goldfall","gold",["#fff0a0","#e89a43","#b68bff"]],["Whirl Islands Abyss","abyss",["#5ce3e5","#3978cb","#c0a6ff"]]]],
+["Hoenn",3,[[384,"Rayquaza"],[282,"Gardevoir"]],[["Sootopolis Glass Sea","undersea",["#72f2e6","#2486c7","#b3f2ff"]],["Mt. Chimney Inferno","volcano",["#ffb14e","#f04d37","#8c326b"]],["Sky Pillar Ascension","sky",["#b4e9ff","#7c9aff","#f7d4a2"]],["Seafloor Collapse","trench",["#3bd8cf","#22619e","#bd75e8"]]]],
+["Sinnoh",4,[[483,"Dialga"],[484,"Palkia"]],[["Spear Pillar Paradox","cosmos",["#9ee8ff","#9c8cff","#fff0a1"]],["Mt. Coronet Crystal","crystal",["#b8f5ff","#8ca8ff","#e2b8ff"]],["Lake Guardians","mirror",["#a9f5d5","#6d9eea","#f4b8e8"]],["Distortion World","distortion",["#f18bdb","#5a65d9","#70e6d0"]]]],
+["Unova",5,[[643,"Reshiram"],[644,"Zekrom"]],[["Castelia Neon Canyon","skyline",["#ff9b62","#f05d91","#6f8fff"]],["Relic Castle Mirage","desert",["#f4d17b","#db8956","#9c78ce"]],["Chargestone Storm","storm",["#9cecff","#4f83ec","#d6a4ff"]],["Dreamyard Surrealism","storybook",["#ffb8c9","#a9a2ff","#a5efd7"]]]],
+["Kalos",6,[[716,"Xerneas"],[717,"Yveltal"]],[["Lumiose Haute Couture","artnouveau",["#f6b1d9","#7ce0d4","#f8dc91"]],["Reflection Cave","prism",["#a4f0f3","#bc9cff","#ffb4dc"]],["Fairy Garden Impossible","garden",["#ffb5e7","#c2f18d","#a6b7ff"]],["Anistar Star Clock","eclipse",["#f4c5ff","#797ce8","#ffcf87"]]]],
+["Alola",7,[[791,"Solgaleo"],[792,"Lunala"]],[["Hau'oli Festival","festival",["#ffb56c","#f47fbb","#58dccc"]],["Ultra Space Bloom","alien",["#ed8cff","#55e8c8","#f6df73"]],["Poni Island Monsoon","monsoon",["#6de8e0","#6d87dc","#f8b6a2"]],["Altar of the Sun-Moon","celestial",["#f8d77d","#a68af1","#7de5eb"]]]],
+["Galar",8,[[888,"Zacian"],[889,"Zamazenta"]],[["Wyndon After Hours","stadium",["#f18a9d","#759dff","#f4d18a"]],["Slumbering Weald","mistwood",["#a9d99a","#7b8fe0","#d5b5ef"]],["Crown Tundra Aurora","aurora",["#91f2ee","#8b9eff","#f5d5ff"]],["Dynamax Rift","rift",["#ff557c","#ffb05d","#7b76ff"]]]]
 ];
 const ns="http://www.w3.org/2000/svg";
-function makeGeometry(level,seed,colors){
- const svg=document.createElementNS(ns,"svg");svg.setAttribute("class","geometry");svg.setAttribute("viewBox","0 0 300 420");svg.setAttribute("preserveAspectRatio","xMidYMid slice");
- const add=(tag,attrs)=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);svg.append(el);return el};
- for(let i=0;i<12+level*12;i++){
-  const x=(i*73+seed*29)%300,y=(i*137+seed*41)%420,r=8+((i*17+seed*11)%50);
-  if(level===1){add("circle",{cx:x,cy:y,r,fill:"none",stroke:colors[i%3],"stroke-width":1.5,opacity:.48})}
-  else if(level===2){add("polygon",{points:`${x},${y-r} ${x+r},${y+r} ${x-r},${y+r}`,fill:"none",stroke:colors[i%3],"stroke-width":1.5,opacity:.52})}
-  else if(level===3){add("path",{d:`M${x-r} ${y} Q${x} ${y-r*2} ${x+r} ${y} Q${x} ${y+r*2} ${x-r} ${y}`,fill:"none",stroke:colors[i%3],"stroke-width":1.7,opacity:.62})}
-  else {add("polygon",{points:Array.from({length:8},(_,j)=>{const a=j*Math.PI/4+i*.23,rr=r*(j%2?0.55:1);return (x+Math.cos(a)*rr)+","+(y+Math.sin(a)*rr)}).join(" "),fill:"none",stroke:colors[i%3],"stroke-width":1.8,opacity:.72})}
- }
- for(let i=0;i<level*5;i++){const x=(i*61+seed*17)%300,y=(i*97+seed*23)%420;add("path",{d:`M${x-35} ${y-45} L${x+35} ${y+45} M${x+35} ${y-45} L${x-35} ${y+45}`,stroke:colors[i%3],"stroke-width":1,opacity:.45})}
- return svg;
+function makeScene(kind,c,seed){
+ const [a,b,d]=c,P=[];const add=s=>P.push(s);
+ add('<defs><linearGradient id="g" x2=".1" y2="1"><stop stop-color="'+a+'"/><stop offset=".55" stop-color="'+b+'"/><stop offset="1" stop-color="#080d25"/></linearGradient><radialGradient id="h"><stop stop-color="'+d+'" stop-opacity=".9"/><stop offset="1" stop-color="'+d+'" stop-opacity="0"/></radialGradient></defs><rect width="300" height="420" fill="url(#g)"/><ellipse cx="'+(90+seed*17%120)+'" cy="145" rx="160" ry="190" fill="url(#h)"/>');
+ const path=(p,col=a,w=3,op=.6)=>add('<path d="'+p+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" opacity="'+op+'" stroke-linecap="round"/>');
+ const circ=(x,y,r,col=d,op=.7)=>add('<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+col+'" opacity="'+op+'"/>');
+ const poly=(p,col=a,op=.65)=>add('<polygon points="'+p+'" fill="'+col+'" opacity="'+op+'"/>');
+ for(let i=0;i<24;i++)circ(i*83%300,i*137%420,i%8===0?2.5:1,"#fff",.25);
+ if(["city","skyline","stadium"].includes(kind)){for(let i=0;i<13;i++){let x=i*25-8,w=15+i*7%16,h=75+(i*47+seed*17)%230;add('<rect x="'+x+'" y="'+(420-h)+'" width="'+w+'" height="'+h+'" fill="'+(i%2?b:d)+'" opacity=".8"/>');for(let y=420-h+13;y<410;y+=19)add('<path d="M'+(x+4)+' '+y+'h3m5 0h3" stroke="#fff8" stroke-width="3"/>')}if(kind==="stadium")path("M12 285 Q150 75 288 285",d,14,.65)}
+ else if(["jungle","mistwood","garden","alien"].includes(kind)){for(let i=0;i<17;i++){let x=i*19-10,h=100+(i*37+seed*11)%240;add('<path d="M'+x+' 420 Q'+(x-30)+' '+(420-h/2)+' '+(x+5)+' '+(420-h)+' Q'+(x+35)+' '+(420-h/2)+' '+x+' 420" fill="'+(i%2?a:b)+'" opacity=".7"/>')}if(kind==="garden"||kind==="alien")for(let i=0;i<10;i++){let x=i*29,y=100+i*23%230;circ(x,y,9,d,.9);for(let j=0;j<6;j++)add('<ellipse cx="'+x+'" cy="'+y+'" rx="5" ry="20" fill="'+(j%2?a:b)+'" transform="rotate('+(j*60)+' '+x+' '+y+')" opacity=".7"/>')}}
+ else if(["undersea","abyss","trench","monsoon"].includes(kind)){for(let i=0;i<10;i++)path("M-20 "+(55+i*38)+" Q60 "+(20+i*38)+" 130 "+(55+i*38)+" T320 "+(45+i*38),i%2?a:d,3,.6);for(let i=0;i<20;i++)circ(i*53%300,i*79%400,2+i%4,d,.6);if(kind==="trench"||kind==="abyss"){poly("0,100 90,230 120,420 0,420","#07142d",.85);poly("300,90 210,230 180,420 300,420","#07142d",.85)}}
+ else if(["volcano","desert","crystal"].includes(kind)){if(kind==="volcano"){poly("0,330 80,110 145,260 220,70 300,340 300,420 0,420","#34213b",.95);path("M80 110L110 185 145 260 220 70 245 180",d,13,.9)}if(kind==="desert"){for(let i=0;i<6;i++)path("M-30 "+(180+i*45)+" Q80 "+(100+i*55)+" 160 "+(180+i*45)+" T330 "+(170+i*45),i%2?a:d,15,.4);circ(220,95,40,d,.8)}if(kind==="crystal")for(let i=0;i<15;i++){let x=i*23-10,h=90+i*37%240;poly(x+",420 "+(x+18)+","+(420-h)+" "+(x+42)+",420",i%2?a:d,.7)}}
+ else if(["shrine","artnouveau","celestial","storybook"].includes(kind)){for(let i=0;i<5;i++){let x=18+i*65;add('<path d="M'+x+' 330V'+(110+i%2*25)+' q27 -42 54 0V330" fill="none" stroke="'+(i%2?a:d)+'" stroke-width="9" opacity=".75"/>')}poly("0,330 Q150,280 300,330 300,420 0,420","#10152d",.75);if(kind==="artnouveau")for(let i=0;i<8;i++)path("M"+i*42+" 420 Q"+(i*42+50)+" 260 "+(i*42+5)+" 120 Q"+(i*42+70)+" 200 "+(i*42+30)+" 310",a,4,.7);if(kind==="celestial"||kind==="storybook")for(let i=0;i<6;i++){let x=150+Math.cos(i*Math.PI/3)*85,y=150+Math.sin(i*Math.PI/3)*85;circ(x,y,10,d,.9);path("M150 150L"+x+" "+y,a,2,.7)}}
+ else if(["clock","eclipse","cosmos","gold"].includes(kind)){for(let i=0;i<8;i++)add('<circle cx="150" cy="190" r="'+(30+i*27)+'" fill="none" stroke="'+(i%2?a:d)+'" stroke-width="'+(i%3+1)+'" opacity=".5"/>');path("M150 190L150 45 M150 190L250 250",d,5,.9);for(let i=0;i<12;i++){let q=i*Math.PI/6;circ(150+Math.cos(q)*135,190+Math.sin(q)*135,3,a,.9)}if(kind==="eclipse")circ(150,190,67,"#080d25",.9),circ(174,165,64,d,.8);if(kind==="gold")for(let i=0;i<22;i++)path("M"+i*17+" 0l-20 420","#fff0b8",2,.35)}
+ else if(["prism","mirror","distortion","rift","glitch","storm"].includes(kind)){for(let i=0;i<17;i++){let x=i*41%300,y=i*67%420;poly(x+","+(y-90)+" "+(x+65)+","+y+" "+x+","+(y+90)+" "+(x-65)+","+y,[a,b,d][i%3],.3)}if(kind==="mirror")path("M0 210H300","#fff",4,.8);if(kind==="rift")path("M150 -20L110 120 170 170 115 280 165 440","#fff",19,.9);if(kind==="glitch")for(let i=0;i<19;i++)path("M0 "+i*23+"h"+(65+i*7),i%2?a:d,2+i%7,.85);if(kind==="distortion")path("M0 80 Q150 300 300 80 M0 340 Q150 120 300 340",d,12,.7);if(kind==="storm")for(let i=0;i<8;i++)path("M"+i*42+" 0L"+(i*42-40)+" 160 "+(i*42+20)+" 210",d,5,.75)}
+ else if(["sky","aurora"].includes(kind)){for(let i=0;i<8;i++)path("M-40 "+(65+i*35)+" Q60 "+i*22+" 150 "+(65+i*35)+" T340 "+(55+i*35),[a,b,d][i%3],16,.4);for(let i=0;i<5;i++)poly((i*75-20)+",420 "+(i*75+50)+","+(170+i%2*50)+" "+(i*75+120)+",420","#d8f5ff",.42)}
+ else if(kind==="festival"){for(let i=0;i<12;i++){let x=i*27;path("M"+x+" 0L"+(x+45)+" 95",d,2,.6);poly((x+33)+",95 "+(x+57)+",95 "+(x+45)+",122",[a,b,d][i%3],.9)}for(let i=0;i<16;i++)circ(i*47%300,(i*83+80)%300,5+i%4*2,[a,b,d][i%3],.9)}
+ add('<rect width="300" height="420" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="2"/>');
+ return '<svg class="scene" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice" xmlns="'+ns+'">'+P.join("")+'</svg>';
 }
 const root=document.getElementById("regions");
-regions.forEach((r,ri)=>{
- const section=document.createElement("section");section.className="region";
- section.innerHTML='<div class="region-head"><h2>'+r.name+'</h2><span>Generation '+r.gen+' · 4 styles</span></div><div class="cards"></div>';
- const cards=section.querySelector(".cards");
- styles.forEach((style,si)=>{
-  const [id,name]=r.pokemon[si%2],card=document.createElement("article");card.className="card s"+(si+1);
-  card.style.setProperty("--a",r.colors[0]);card.style.setProperty("--b",r.colors[1]);card.style.setProperty("--c",r.colors[2]);
-  const env=document.createElement("div");env.className="environment";
-  const art=makeGeometry(si+1,ri+1,r.colors);
-  const echo=document.createElement("img");echo.className="echo";echo.alt="";echo.draggable=false;echo.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+id+".svg";
-  const echo2=echo.cloneNode();echo2.className="echo echo2";
-  const mon=document.createElement("img");mon.className="mon";mon.alt=name;mon.draggable=false;mon.loading="lazy";mon.src=echo.src;mon.onerror=()=>{mon.onerror=null;const png="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";mon.src=png;echo.src=png;echo2.src=png};
-  const tag=document.createElement("div");tag.className="style-tag";tag.textContent=style[0];
-  const label=document.createElement("div");label.className="label";label.innerHTML="<b>"+name+"</b><small>"+r.name+" · "+style[1]+"</small>";
-  card.append(env,art,echo,echo2,mon,tag,label);cards.append(card);
- });
- root.append(section);
-});
+regions.forEach((r,ri)=>{const section=document.createElement("section");section.className="region";section.innerHTML='<div class="region-head"><h2>'+r[0]+'</h2><span>Generation '+r[1]+' · 4 original worlds</span></div><div class="cards"></div>';const cards=section.querySelector(".cards");
+r[3].forEach((theme,si)=>{const [title,kind,colors]=theme,[id,name]=r[2][si%2];const card=document.createElement("article");card.className="card";card.style.setProperty("--glow",colors[0]);card.style.setProperty("--glow2",colors[1]);card.style.setProperty("--echo-hue",(ri*43+si*77)%360+"deg");card.innerHTML=makeScene(kind,colors,ri*4+si+1);
+const art=document.createElement("img");art.className="echo";art.alt="";art.draggable=false;art.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+id+".svg";const echo2=art.cloneNode();echo2.className="echo echo2";
+const mon=document.createElement("img");mon.className="mon";mon.alt=name;mon.draggable=false;mon.loading="lazy";mon.src=art.src;mon.onerror=()=>{mon.onerror=null;const png="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";mon.src=png;art.src=png;echo2.src=png};
+const tag=document.createElement("div");tag.className="style-tag";tag.textContent=title;const label=document.createElement("div");label.className="label";label.innerHTML="<b>"+name+"</b><small>"+r[0]+" · "+kind.replace(/([A-Z])/g," $1")+"</small>";card.append(art,echo2,mon,tag,label);cards.append(card)});root.append(section)});
 </script>
 </body></html>
