@@ -3,49 +3,92 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b16">
-<title>Pokémon Region Cards</title>
+<title>Pokémon Region Cards — Style Lab</title>
 <style>
 :root{color-scheme:dark;--bg:#080b16;--line:#27324a;--muted:#9aa8c2}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -12%,#29375a 0,#10172b 38%,var(--bg) 75%);color:#f5f7ff;font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
-header{max-width:1400px;margin:auto;padding:30px 24px 22px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px}h1{font-size:clamp(28px,5vw,48px);line-height:1;margin:0 0 10px;letter-spacing:-.045em}.sub{color:var(--muted);max-width:760px;margin:0}.back{color:#c4d2ff;text-decoration:none;border:1px solid var(--line);padding:8px 12px;border-radius:10px;white-space:nowrap}
+header{max-width:1400px;margin:auto;padding:30px 24px 22px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px}h1{font-size:clamp(28px,5vw,48px);line-height:1;margin:0 0 10px;letter-spacing:-.045em}.sub{color:var(--muted);max-width:790px;margin:0}.back{color:#c4d2ff;text-decoration:none;border:1px solid var(--line);padding:8px 12px;border-radius:10px;white-space:nowrap}
 main{max-width:1400px;margin:auto;padding:0 24px 50px}.region{margin:20px 0 38px}.region-head{display:flex;align-items:baseline;gap:12px;margin-bottom:13px}.region-head h2{margin:0;font-size:22px}.region-head span{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.card{position:relative;aspect-ratio:3/4.2;max-height:560px;overflow:hidden;border-radius:18px;background:#15213a;box-shadow:0 18px 42px #0009,0 0 0 1px #ffffff45;isolation:isolate}
-.poster{position:absolute;inset:-11%;width:122%;height:122%;object-fit:cover;z-index:-2}
-.card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0001 0%,#0000 48%,#050914a8 100%);z-index:-1}
-.mon{position:absolute;width:88%;height:78%;left:6%;top:4%;object-fit:contain;filter:drop-shadow(0 16px 10px #000b) drop-shadow(0 0 14px #ffffff75)}
-.name{position:absolute;left:12px;right:12px;bottom:12px;padding:10px 12px;background:#10182bd9;border:1px solid #ffffff70;border-radius:11px;backdrop-filter:blur(8px);box-shadow:0 6px 18px #0008}
-.name b{display:block;font-size:clamp(15px,2.2vw,21px);letter-spacing:.04em}.name small{font-size:10px;color:#d2dcf2;letter-spacing:.14em;text-transform:uppercase}
-@media(max-width:560px){header{padding:24px 16px 18px}.top{align-items:flex-start}main{padding:0 12px 35px}.cards{gap:10px}.card{border-radius:13px}.name{left:7px;right:7px;bottom:7px;padding:7px}.name small{font-size:8px}.region{margin:18px 0 30px}}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.card{position:relative;aspect-ratio:3/4.2;max-height:520px;min-width:0;overflow:hidden;border-radius:18px;background:#15213a;box-shadow:0 18px 42px #0009,0 0 0 1px #ffffff45;isolation:isolate;--a:#32d7c4;--b:#ed58d6;--c:#ffe38b}
+.environment{position:absolute;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,var(--a) 0%,transparent 44%),radial-gradient(ellipse at 15% 90%,var(--b) 0%,transparent 52%),linear-gradient(155deg,#11142e 0%,#172d50 48%,#080d20 100%)}
+.environment:before,.environment:after{content:"";position:absolute;inset:-25%;pointer-events:none}
+.environment:before{background:repeating-conic-gradient(from 12deg at 50% 48%,#ffffff22 0deg 1deg,transparent 1deg 12deg);opacity:.28;mix-blend-mode:screen}
+.environment:after{background:radial-gradient(ellipse at 50% 50%,transparent 25%,#020512b8 100%);box-shadow:inset 0 0 60px #000b}
+.geometry{position:absolute;inset:0;width:100%;height:100%;opacity:.8;mix-blend-mode:screen}
+.echo{position:absolute;z-index:0;width:112%;height:100%;left:-6%;top:-2%;object-fit:contain;pointer-events:none;opacity:.52;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(12) hue-rotate(var(--echo-hue,120deg)) contrast(1.5) brightness(1.12) drop-shadow(0 0 12px var(--a)) drop-shadow(0 0 26px var(--b))}
+.echo.echo2{opacity:.27;transform:translate(7%,4%) scale(1.16);filter:grayscale(1) sepia(1) saturate(14) hue-rotate(calc(var(--echo-hue,120deg) + 125deg)) contrast(1.6) brightness(1.15);mix-blend-mode:color-dodge}
+.mon{position:absolute;z-index:2;width:88%;height:78%;left:6%;top:4%;object-fit:contain;filter:drop-shadow(0 16px 10px #000c) drop-shadow(0 0 12px var(--a)) drop-shadow(0 0 4px #fff9)}
+.card:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border:1px solid #ffffff65;border-radius:inherit;box-shadow:inset 0 0 28px #e8faff35}
+.label{position:absolute;z-index:5;left:9px;right:9px;bottom:9px;padding:8px 9px;background:#080d20c9;border:1px solid #ffffff75;border-radius:10px;backdrop-filter:blur(8px);box-shadow:0 7px 18px #0009}
+.label b{display:block;font-size:clamp(12px,1.45vw,17px);letter-spacing:.035em}.label small{font-size:9px;color:#e1e9ff;letter-spacing:.13em;text-transform:uppercase}
+.style-tag{position:absolute;z-index:5;top:9px;left:9px;padding:5px 7px;border-radius:7px;background:#050a19b8;border:1px solid #ffffff55;font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+.card.s1{--echo-hue:35deg}.card.s1 .environment{background:radial-gradient(ellipse at 50% 28%,var(--c) 0%,transparent 38%),linear-gradient(145deg,var(--a),#17203d 54%,var(--b))}
+.card.s1 .geometry{opacity:.42}
+.card.s2{--echo-hue:175deg}.card.s2 .environment{background:radial-gradient(ellipse at 20% 22%,var(--c) 0%,transparent 34%),radial-gradient(ellipse at 80% 76%,var(--a) 0%,transparent 40%),repeating-linear-gradient(135deg,#ffffff12 0 2px,transparent 2px 16px),linear-gradient(155deg,#080d24,#30205a 52%,#071b34)}
+.card.s2 .geometry{opacity:.95;filter:drop-shadow(0 0 5px var(--a))}
+.card.s3{--echo-hue:265deg}.card.s3 .environment{background:radial-gradient(ellipse at 50% 50%,var(--c) 0%,transparent 24%),repeating-radial-gradient(ellipse at 50% 50%,#ffffff19 0 1px,transparent 2px 14px),conic-gradient(from 20deg at 50% 45%,var(--a),#111332,var(--b),#111332,var(--a))}
+.card.s3 .geometry{opacity:1;filter:drop-shadow(0 0 8px var(--b))}
+.card.s4{--echo-hue:320deg}.card.s4 .environment{background:conic-gradient(from 0deg at 50% 50%,var(--a),#10112c,var(--b),#15103a,var(--c),#10112c,var(--a));filter:saturate(1.6)}
+.card.s4 .geometry{opacity:1;filter:drop-shadow(0 0 11px var(--a)) drop-shadow(0 0 18px var(--b))}
+.card.s4 .echo{opacity:.68}.card.s4 .echo.echo2{opacity:.46}
+.card.s4 .mon{filter:drop-shadow(0 0 9px white) drop-shadow(0 0 18px var(--a)) drop-shadow(0 0 30px var(--b))}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{border-radius:13px}.label{left:7px;right:7px;bottom:7px;padding:7px}.style-tag{top:7px;left:7px}}
+@media(max-width:560px){header{padding:24px 16px 18px}.top{align-items:flex-start}main{padding:0 12px 35px}.region{margin:18px 0 30px}.region-head h2{font-size:20px}}
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>POKÉMON / REGION CARDS</h1><p class="sub">Two starter card concepts for each of the eight Destination Pokémon poster regions. Each poster fills the card edge-to-edge, with the Pokémon SVG artwork layered in front.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
+<header><div class="top"><div><h1>POKÉMON / REGION STYLE LAB</h1><p class="sub">Four increasingly outlandish background directions for every region. Each design reuses the Pokémon's own SVG as the foreground character and as two neon echo layers, like the original Card Lab style. No poster backgrounds.</p></div><a class="back" href="../cardtrial2/">← Card Lab 2</a></div></header>
 <main id="regions"></main>
 <script>
 const regions=[
-{name:"Kanto",gen:1,poster:"https://efour.b-cdn.net/uploads/default/original/4X/4/d/e/4de9fe65db7f91b5a6905fa445684d5850bf2865.jpeg",pokemon:[[25,"Pikachu"],[6,"Charizard"]]},
-{name:"Johto",gen:2,poster:"https://efour.b-cdn.net/uploads/default/original/4X/e/6/d/e6d4d0c9b7c7c2b2744602d20267eb7f01024e70.jpeg",pokemon:[[249,"Lugia"],[250,"Ho-Oh"]]},
-{name:"Hoenn",gen:3,poster:"https://efour.b-cdn.net/uploads/default/original/4X/1/b/e/1be788bc15e0bf8cd8f384543ce11b5ab84f9381.jpeg",pokemon:[[384,"Rayquaza"],[282,"Gardevoir"]]},
-{name:"Sinnoh",gen:4,poster:"https://efour.b-cdn.net/uploads/default/original/4X/5/4/8/54808a1e8784b518216d2b53799b5c7941617ee5.jpeg",pokemon:[[483,"Dialga"],[484,"Palkia"]]},
-{name:"Unova",gen:5,poster:"https://efour.b-cdn.net/uploads/default/original/4X/a/f/a/afa15bba8e369178a302fa5874523d79407f2d16.jpeg",pokemon:[[643,"Reshiram"],[644,"Zekrom"]]},
-{name:"Kalos",gen:6,poster:"https://efour.b-cdn.net/uploads/default/original/4X/7/8/b/78b6ecb108fb42ee312b8dc85adaaa8163483df9.jpeg",pokemon:[[716,"Xerneas"],[717,"Yveltal"]]},
-{name:"Alola",gen:7,poster:"https://efour.b-cdn.net/uploads/default/original/4X/5/a/3/5a34ca22032c44d205335f13d2d936c3410d872a.jpeg",pokemon:[[791,"Solgaleo"],[792,"Lunala"]]},
-{name:"Galar",gen:8,poster:"https://efour.b-cdn.net/uploads/default/original/4X/a/f/b/afb8c52b623edd40207f3584db79b8405b735636.jpeg",pokemon:[[888,"Zacian"],[889,"Zamazenta"]]}
+{name:"Kanto",gen:1,colors:["#38c88c","#ed7c3c","#f4dc8c"],pokemon:[[25,"Pikachu"],[6,"Charizard"]]},
+{name:"Johto",gen:2,colors:["#8f7be8","#f0b95d","#a8e8ef"],pokemon:[[249,"Lugia"],[250,"Ho-Oh"]]},
+{name:"Hoenn",gen:3,colors:["#24c8d8","#2775c8","#f4a5c5"],pokemon:[[384,"Rayquaza"],[282,"Gardevoir"]]},
+{name:"Sinnoh",gen:4,colors:["#8bc8ef","#b4a0ed","#f7e4a0"],pokemon:[[483,"Dialga"],[484,"Palkia"]]},
+{name:"Unova",gen:5,colors:["#f08c58","#596be8","#e7e7f5"],pokemon:[[643,"Reshiram"],[644,"Zekrom"]]},
+{name:"Kalos",gen:6,colors:["#ec79c4","#69d8cf","#f8d68c"],pokemon:[[716,"Xerneas"],[717,"Yveltal"]]},
+{name:"Alola",gen:7,colors:["#31c7b0","#f2a85b","#d9a8ef"],pokemon:[[791,"Solgaleo"],[792,"Lunala"]]},
+{name:"Galar",gen:8,colors:["#e65b78","#5b8ee8","#d9c7ff"],pokemon:[[888,"Zacian"],[889,"Zamazenta"]]}
 ];
-const root=document.getElementById("regions");
-for(const r of regions){
- const section=document.createElement("section");section.className="region";
- section.innerHTML='<div class="region-head"><h2>'+r.name+'</h2><span>Generation '+r.gen+' · 2 concepts</span></div><div class="cards"></div>';
- const cards=section.querySelector(".cards");
- for(const [id,name] of r.pokemon){
-  const card=document.createElement("article");card.className="card";
-  const poster=document.createElement("img");poster.className="poster";poster.src=r.poster;poster.alt=r.name+" Destination Pokémon poster";poster.loading="lazy";
-  const mon=document.createElement("img");mon.className="mon";mon.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+id+".svg";mon.alt=name;mon.loading="lazy";mon.onerror=()=>{mon.onerror=null;mon.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png"};
-  const label=document.createElement("div");label.className="name";label.innerHTML="<b>"+name+"</b><small>"+r.name+" · No. "+String(id).padStart(4,"0")+"</small>";
-  card.append(poster,mon,label);cards.append(card);
+const styles=[
+["01 · Dream terrain","Surreal atmospheric landscape"],
+["02 · Fracture world","Angular geometry and layered dimensions"],
+["03 · Hypercosmos","Concentric portals and impossible space"],
+["04 · Reality overload","Full-spectrum dimensional distortion"]
+];
+const ns="http://www.w3.org/2000/svg";
+function makeGeometry(level,seed,colors){
+ const svg=document.createElementNS(ns,"svg");svg.setAttribute("class","geometry");svg.setAttribute("viewBox","0 0 300 420");svg.setAttribute("preserveAspectRatio","xMidYMid slice");
+ const add=(tag,attrs)=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);svg.append(el);return el};
+ for(let i=0;i<12+level*12;i++){
+  const x=(i*73+seed*29)%300,y=(i*137+seed*41)%420,r=8+((i*17+seed*11)%50);
+  if(level===1){add("circle",{cx:x,cy:y,r,fill:"none",stroke:colors[i%3],"stroke-width":1.5,opacity:.48})}
+  else if(level===2){add("polygon",{points:`${x},${y-r} ${x+r},${y+r} ${x-r},${y+r}`,fill:"none",stroke:colors[i%3],"stroke-width":1.5,opacity:.52})}
+  else if(level===3){add("path",{d:`M${x-r} ${y} Q${x} ${y-r*2} ${x+r} ${y} Q${x} ${y+r*2} ${x-r} ${y}`,fill:"none",stroke:colors[i%3],"stroke-width":1.7,opacity:.62})}
+  else {add("polygon",{points:Array.from({length:8},(_,j)=>{const a=j*Math.PI/4+i*.23,rr=r*(j%2?0.55:1);return (x+Math.cos(a)*rr)+","+(y+Math.sin(a)*rr)}).join(" "),fill:"none",stroke:colors[i%3],"stroke-width":1.8,opacity:.72})}
  }
- root.append(section);
+ for(let i=0;i<level*5;i++){const x=(i*61+seed*17)%300,y=(i*97+seed*23)%420;add("path",{d:`M${x-35} ${y-45} L${x+35} ${y+45} M${x+35} ${y-45} L${x-35} ${y+45}`,stroke:colors[i%3],"stroke-width":1,opacity:.45})}
+ return svg;
 }
+const root=document.getElementById("regions");
+regions.forEach((r,ri)=>{
+ const section=document.createElement("section");section.className="region";
+ section.innerHTML='<div class="region-head"><h2>'+r.name+'</h2><span>Generation '+r.gen+' · 4 styles</span></div><div class="cards"></div>';
+ const cards=section.querySelector(".cards");
+ styles.forEach((style,si)=>{
+  const [id,name]=r.pokemon[si%2],card=document.createElement("article");card.className="card s"+(si+1);
+  card.style.setProperty("--a",r.colors[0]);card.style.setProperty("--b",r.colors[1]);card.style.setProperty("--c",r.colors[2]);
+  const env=document.createElement("div");env.className="environment";
+  const art=makeGeometry(si+1,ri+1,r.colors);
+  const echo=document.createElement("img");echo.className="echo";echo.alt="";echo.draggable=false;echo.src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+id+".svg";
+  const echo2=echo.cloneNode();echo2.className="echo echo2";
+  const mon=document.createElement("img");mon.className="mon";mon.alt=name;mon.draggable=false;mon.loading="lazy";mon.src=echo.src;mon.onerror=()=>{mon.onerror=null;const png="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";mon.src=png;echo.src=png;echo2.src=png};
+  const tag=document.createElement("div");tag.className="style-tag";tag.textContent=style[0];
+  const label=document.createElement("div");label.className="label";label.innerHTML="<b>"+name+"</b><small>"+r.name+" · "+style[1]+"</small>";
+  card.append(env,art,echo,echo2,mon,tag,label);cards.append(card);
+ });
+ root.append(section);
+});
 </script>
 </body></html>
